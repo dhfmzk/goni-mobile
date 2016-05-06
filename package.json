@@ -6,7 +6,9 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
+    "apsl-react-native-button": "^2.5.0",
     "react": "15.0.2",
-    "react-native": "^0.26.3"
+    "react-native": "^0.26.3",
+    "react-native-keyboard-spacer": "^0.2.0"
   }
 }
