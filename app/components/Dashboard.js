@@ -34,10 +34,8 @@ export default class GoniDashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loggedin: false,
-            email: 'test@layer123.io',
-            passward: 'test',
-            testValue: ''
+            token: this.props.token,
+            user: this.props.user
         };
     }
 
