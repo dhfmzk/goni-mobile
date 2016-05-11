@@ -8,15 +8,16 @@ import {
     TextInput,
     TouchableHighlight,
     NavigatorIOS,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    AsyncStorage
 } from 'react-native';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Button from 'apsl-react-native-button';
 
 import GoniDashboard from './Dashboard';
+import GoniProjectList from './ProjectList';
 
 // URL String for use goni api
-const GONI_HOME_URL = 'https://dashboard.goniapm.io/api';
 const GONI_LOGIN_URL = 'https://dashboard.goniapm.io/api/auth';
 
 // Goni Mobile View Component
@@ -28,7 +29,7 @@ export default class GoniMobileLogin extends Component {
         this.state = {
             loggedin: false,
             email: 'test@layer123.io',
-            passward: 'test',
+            password: 'test',
             testValue: ''
         };
     }
@@ -36,7 +37,7 @@ export default class GoniMobileLogin extends Component {
     _handleChangePage() {
         this.props.navigator.push({
             title: "Dashboard",
-            component: GoniDashboard,
+            component: GoniProjectList,
             passProps: {
                 toggleNavBar: this.props.toggleNavBar,
             }
@@ -44,36 +45,33 @@ export default class GoniMobileLogin extends Component {
     }
 
     _Login() {
-        var params = {
-            userName: 'test@layer123.io',
-            password: 'test'
-        };
-        var formData = new FormData();
-        for (var k in params) {
-            formData.append(k, params[k]);
-        }
+        var params = "email="+this.state.email+"&password="+this.state.password;
+        var request = new XMLHttpRequest();
 
-        fetch(GONI_LOGIN_URL, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
-            body: formData
-        })
-        .then((response) => response.json())
-        .then((responseData) => {
-            this.setState(
-                {testValue: "cool"}
-            );
-        })
-        .catch((err) => {
-            console.warn(err);
-            this.setState({
-                testValue: this.state.email + " " + this.state.passward
-            });
-        })
-        .done();
+        request.onreadystatechange = (e) => {
+            if (request.readyState !== 4) {
+                return;
+            }
+            if (request.status === 200) {
+                var responseJSON = JSON.parse(request.responseText);
+
+                AsyncStorage.setItem('token', responseJSON['token'])
+                .then(() => {
+                    AsyncStorage.getItem('token').then((value) => {
+                        this._handleChangePage();
+                    }).done();
+                });
+
+            } else {
+                console.warn('error');
+            }
+        };
+
+        request.open('POST', GONI_LOGIN_URL, true);
+        request.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+        request.setRequestHeader("Cache-Control","no-cache, must-revalidate");
+        request.setRequestHeader("Pragma","no-cache");
+        request.send(params);
     }
 
     render() {
@@ -91,11 +89,13 @@ export default class GoniMobileLogin extends Component {
                             <Text style={{color: 'gray'}}>E-mail</Text>
                             <TextInput
                                 style={{borderRadius: 2, borderWidth: 1, borderColor: '#ced3d6', marginBottom: 30, color: 'gray', backgroundColor: 'white', height:30}}
+                                onChangeText={(text) => {this.setState({email: text})}}
                             />
-                            <Text style={{color: 'gray'}}>Passward</Text>
+                            <Text style={{color: 'gray'}}>Password</Text>
                             <TextInput
                                 style={{borderRadius: 2, borderWidth: 1, borderColor: '#ced3d6', color: 'gray', backgroundColor: 'white', height:30}}
                                 secureTextEntry={true}
+                                onChangeText={(text) => {this.setState({password: text})}}
                             />
                         </View>
                         <View style={{marginBottom: 20, width: 200}}>
