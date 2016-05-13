@@ -6,3 +6,10 @@
 npm install
 react-native run-ios
 ```
+
+
+
+###TODO
+* Refactoring source code
+* Draw Dashboard chart
+* Make simple setting view
