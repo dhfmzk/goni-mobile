@@ -14,8 +14,7 @@ import {
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Button from 'apsl-react-native-button';
 
-import GoniDashboard from './Dashboard';
-import GoniProjectList from './ProjectList';
+import GoniProjects from './ProjectList';
 
 // URL String for use goni api
 const GONI_LOGIN_URL = 'https://dashboard.goniapm.io/api/auth';
@@ -36,8 +35,8 @@ export default class GoniMobileLogin extends Component {
 
     _handleChangePage() {
         this.props.navigator.push({
-            title: "Dashboard",
-            component: GoniProjectList,
+            title: "GoniProjects",
+            component: GoniProjects,
             passProps: {
                 toggleNavBar: this.props.toggleNavBar,
             }
