@@ -44,7 +44,8 @@ export default class GoniProjects extends Component {
         super(props);
         var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this._ListItem = this._ListItem.bind(this);
-        this.callThisFunction = this.callThisFunction.bind(this);
+        this._MoveDashboard = this._MoveDashboard.bind(this);
+        this._getProjectList = this._getProjectList.bind(this);
 
         this.state = {
             token: '',
@@ -65,7 +66,7 @@ export default class GoniProjects extends Component {
 
         return projects;
     }
-    callThisFunction() {
+    _MoveDashboard() {
         this.props.navigator.push({
             title: "GoniDashboard",
             component: GoniDashboard,
@@ -85,9 +86,7 @@ export default class GoniProjects extends Component {
             }
             if (request.status === 200) {
                 var responseJSON = JSON.parse(request.responseText);
-                this.setState({
-                    projectList: responseJSON
-                });
+                return responseJSON;
             } else {
                 console.warn('error');
             }
