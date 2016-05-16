@@ -11,6 +11,7 @@
     "react-native": "^0.26.3",
     "react-native-device-uuid": "^1.2.0",
     "react-native-gcm-android": "^0.2.0",
-    "react-native-keyboard-spacer": "^0.2.0"
+    "react-native-keyboard-spacer": "^0.2.0",
+    "react-native-scrollable-tab-view": "^0.4.3"
   }
 }
