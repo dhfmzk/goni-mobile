@@ -3,7 +3,9 @@
 
 ### iOS build
 ```bash
+npm install -g rnpm
 npm install
+rnpm link
 react-native run-ios
 ```
 
