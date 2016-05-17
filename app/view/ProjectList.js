@@ -99,11 +99,11 @@ export default class GoniProjects extends Component {
                         <Text style={{fontSize: 8, padding: 3, color: '#2c5ae9', width: 100, borderColor: '#2c5ae9', borderWidth: 0.5, borderRadius: 2}}>APIKEY : {rowData['apikey']}</Text>
                     </View>
                     <TouchableHighlight
-                        onPress={this.callThisFunction}
+                        onPress={this._MoveDashboard}
                         style={{ width:50, alignItems: 'center', justifyContent: 'center'}}>
                         <Image
                             style={{width:40, height: 40}}
-                            source={require('../assets/goButton.png')}
+                            source={require('../assets/img/goButton.png')}
                         />
                     </TouchableHighlight>
                 </View>
@@ -124,11 +124,12 @@ export default class GoniProjects extends Component {
                         </Text>
                         <Image
                             style={{width: 143, height: 90}}
-                            source={require('../assets/goniair.png')}
+                            source={require('../assets/img/goniair.png')}
                         />
                     </View>
                     <View style={{flex: 1, backgroundColor: 'white'}}>
                         <ListView
+                            enableEmptySections={true}
                             dataSource={this.state.dataSource}
                             renderRow={this._ListItem}
                             />

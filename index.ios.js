@@ -9,7 +9,7 @@ import {
     NavigatorIOS,
     TouchableWithoutFeedback
 } from 'react-native';
-import GoniMobileLogin from './app/components/App'
+import GoniMobileLogin from './app/view/App'
 
 class goniMobile extends Component {
 
