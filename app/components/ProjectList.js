@@ -19,22 +19,6 @@ import GoniDashboard from './Dashboard'
 const GONI_PROJECTS_URL = 'https://dashboard.goniapm.io/api/projects';
 
 var testData =[
-    {"id":1,"name":"Duncan","is_plus":1,"apikey":""},
-    {"id":2,"name":"King","is_plus":1,"apikey":""},
-    {"id":3,"name":"Collins","is_plus":1,"apikey":""},
-    {"id":4,"name":"Montgomery","is_plus":1,"apikey":""},
-    {"id":5,"name":"Fox","is_plus":1,"apikey":""},
-    {"id":6,"name":"Kim","is_plus":1,"apikey":""},
-    {"id":7,"name":"Evans","is_plus":1,"apikey":""},
-    {"id":8,"name":"Hunt","is_plus":1,"apikey":""},
-    {"id":9,"name":"Duncan","is_plus":1,"apikey":""},
-    {"id":10,"name":"King","is_plus":1,"apikey":""},
-    {"id":11,"name":"Collins","is_plus":1,"apikey":""},
-    {"id":12,"name":"Montgomery","is_plus":1,"apikey":""},
-    {"id":13,"name":"Fox","is_plus":1,"apikey":""},
-    {"id":14,"name":"Kim","is_plus":1,"apikey":""},
-    {"id":15,"name":"Evans","is_plus":1,"apikey":""},
-    {"id":16,"name":"Hunt","is_plus":1,"apikey":""},
 ];
 
 // Projects View Class
@@ -47,14 +31,16 @@ export default class GoniProjects extends Component {
         this._MoveDashboard = this._MoveDashboard.bind(this);
         this._getProjectList = this._getProjectList.bind(this);
 
+        this._getProjectList()
+
         this.state = {
             token: '',
-            projectList: [{"id":0,"name":"Duncan","is_plus":0,"apikey":""}],
             testValue: '',
             dataSource: ds.cloneWithRows(this._processProjectDta(testData))
         };
 
     }
+
     _processProjectDta(projects) {
         projects.map((project) => {
             if(project['is_plus'] === 1) {
@@ -62,10 +48,12 @@ export default class GoniProjects extends Component {
             }else {
                 project['is_plus'] = 'Goni';
             }
+            project['apikey'] = project['apikey'].substr(0,12);
         });
 
         return projects;
     }
+
     _MoveDashboard() {
         this.props.navigator.push({
             title: "GoniDashboard",
@@ -79,19 +67,20 @@ export default class GoniProjects extends Component {
     async _getProjectList() {
         var token = await AsyncStorage.getItem('token');
         var request = new XMLHttpRequest();
-
+        var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         request.onreadystatechange = (e) => {
             if (request.readyState !== 4) {
                 return;
             }
             if (request.status === 200) {
                 var responseJSON = JSON.parse(request.responseText);
-                return responseJSON;
+                this.setState({
+                    dataSource: ds.cloneWithRows(this._processProjectDta(responseJSON))
+                })
             } else {
                 console.warn('error');
             }
         };
-
         request.open('GET', GONI_PROJECTS_URL);
         request.setRequestHeader('Authorization', 'Bearer ' + token);
         request.send();
