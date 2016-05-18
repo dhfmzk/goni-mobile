@@ -3,11 +3,7 @@
 import React, { Component } from 'react';
 import {
     AppRegistry,
-    StyleSheet,
-    Text,
-    View,
-    NavigatorIOS,
-    TouchableWithoutFeedback
+    NavigatorIOS
 } from 'react-native';
 import GoniMobileLogin from './app/view/App'
 

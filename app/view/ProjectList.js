@@ -38,7 +38,6 @@ export default class GoniProjects extends Component {
             testValue: '',
             dataSource: ds.cloneWithRows(this._processProjectDta(testData))
         };
-
     }
 
     _processProjectDta(projects) {
