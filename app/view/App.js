@@ -9,7 +9,8 @@ import {
     TouchableHighlight,
     NavigatorIOS,
     TouchableWithoutFeedback,
-    AsyncStorage
+    AsyncStorage,
+    Image
 } from 'react-native';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Button from 'apsl-react-native-button';
@@ -75,42 +76,44 @@ export default class GoniMobileLogin extends Component {
 
     render() {
         return (
-            <View style={{flex:1, alignItems:'center', marginTop: 20}}>
-                <View>
-                    <Text style={{textAlign: 'center'}}>Goni Mobile</Text>
+            <View style={{flexDirection: 'column', flex: 1, alignItems:'stretch'}}>
+                <View style={{flex: 0.4, backgroundColor: '#363a3c'}}>
                 </View>
-                <View style={{width: 300, borderRadius:5, borderColor: 'gray', borderWidth: 1}}>
-                    <View style={{flex:1, alignItems:'center'}}>
-                        <View style={{padding: 20}}>
-                            <Text>{this.state.loggedin}</Text>
+                <View style={{flex: 0.6, backgroundColor: '#363a3c', padding: 40, paddingBottom: 10}}>
+                    <View style={{flex: 1, alignItems:'stretch', padding: 0}}>
+                        <View style={{flex: 0.4, alignItems:'stretch'}}>
+                            <View style={{flex: 1}}></View>
+                            <View style={{borderBottomColor:'white', borderBottomWidth: 1, marginBottom:15}}>
+                                <TextInput
+                                    placeholder={'E-mail'}
+                                    placeholderTextColor={'#eaeeef'}
+                                    style={{alignItems:'stretch', color: 'white', height: 40}}
+                                    underlineColorAndroid='white'
+                                    onChangeText={(text) => {this.setState({email: text})}}
+                                />
+                            </View>
+                            <View style={{borderBottomColor:'white', borderBottomWidth: 1, marginBottom:15}}>
+                                <TextInput
+                                    placeholder={'Password'}
+                                    placeholderTextColor={'#eaeeef'}
+                                    style={{alignItems:'stretch', color: 'white', height: 40}}
+                                    secureTextEntry={true}
+                                    onChangeText={(text) => {this.setState({password: text})}}
+                                />
+                            </View>
+                            <View style={{flex: 1}}></View>
                         </View>
-                        <View style={{width:250 ,padding: 20}}>
-                            <Text style={{color: 'gray'}}>E-mail</Text>
-                            <TextInput
-                                style={{borderRadius: 2, borderWidth: 1, borderColor: '#ced3d6', marginBottom: 30, color: 'gray', backgroundColor: 'white', height:30}}
-                                onChangeText={(text) => {this.setState({email: text})}}
-                            />
-                            <Text style={{color: 'gray'}}>Password</Text>
-                            <TextInput
-                                style={{borderRadius: 2, borderWidth: 1, borderColor: '#ced3d6', color: 'gray', backgroundColor: 'white', height:30}}
-                                secureTextEntry={true}
-                                onChangeText={(text) => {this.setState({password: text})}}
-                            />
-                        </View>
-                        <View style={{marginBottom: 20, width: 200}}>
-                            <Text style={{padding:30, textAlign: 'center', color: 'gray'}}>비밀번호를 잊으셨나요?</Text>
+                        <View style={{flex: 0.6, flexDirection:'column', alignItems: 'center'}}>
+                            <View style={{flex: 1}}></View>
                             <Button
-                                style={{borderColor: '#4c80f1', borderRadius:2}}
-                                textStyle={{fontSize: 18, color: '#2c5ae9'}}
+                                style={{borderColor: '#4c80f1', backgroundColor: '#4c80f1', borderRadius:30}}
+                                textStyle={{fontSize: 18, color: 'white'}}
+                                place
                                 onPressOut={() => { this._Login(); }}>
-                                로그인
+                                Log in
                             </Button>
-                            <Button
-                                style={{borderColor: '#4c80f1', borderRadius:2}}
-                                textStyle={{fontSize: 18, color: '#2c5ae9'}}
-                                onPressOut={() => { this._handleChangePage(); }}>
-                                로그인 스킵하기
-                            </Button>
+                            <View style={{flex: 1}}></View>
+                            <Text style={{textAlign: 'center', color: '#ced3d6'}}>Forgot your password?</Text>
                         </View>
                     </View>
                     <Text>{this.state.testValue}</Text>
