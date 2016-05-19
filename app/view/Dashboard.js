@@ -8,33 +8,32 @@ import {
     Text,
     TextInput,
     TouchableHighlight,
-    NavigatorIOS
+    NavigatorIOS,
+    ScrollView
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+import FacebookTabBar from '../components/DashboardBar';
 
-export default class GoniDashboard extends Component {
+export default React.createClass({
 
     // constructor -> sett state
-    constructor(props) {
-        super(props);
-        this.state = {
-            token: this.props.token,
-            user: this.props.user
-        };
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         token: this.props.token,
+    //         user: this.props.user
+    //     };
+    // }
 
     render() {
         return (
-            <View style={{marginTop: 20, flex: 1}}>
-                <ScrollableTabView
-                    tabBarPosition={'bottom'}>
-                    <View tabLabel="Expvar" />
-                    <View tabLabel="Runtime" />
-                    <View tabLabel="Response" />
-                    <View tabLabel="Statistics" />
-                    <View tabLabel="Setting" />
-                </ScrollableTabView>
-            </View>
+            <ScrollableTabView
+                tabBarPosition="bottom"
+                renderTabBar={() => <FacebookTabBar />}>
+                <ScrollView tabLabel="Dashboard" />
+                <ScrollView tabLabel="Flow" />
+                <ScrollView tabLabel="Jest" />
+            </ScrollableTabView>
         );
     }
-}
+})
