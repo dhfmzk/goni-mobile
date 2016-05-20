@@ -33,23 +33,29 @@ export default class FacebookTabBar extends Component {
       inputRange: [0, 1, ], outputRange: [0, tabWidth, ],
     });
 
-    return <View>
-      <View style={[styles.tabs, this.props.style, ]}>
-        {this.props.tabs.map((tab, i) => {
-          return <TouchableOpacity key={tab} onPress={() => this.props.goToPage(i)} style={styles.tab}>
-            <Text>
-                dafdfa
-            </Text>
-          </TouchableOpacity>;
-        })}
-      </View>
-      <Animated.View style={[styles.tabUnderlineStyle, { width: tabWidth }, { left, }, ]} />
-    </View>;
+    return (
+        <View>
+            <View style={[styles.tabs, this.props.style, ]}>
+                {this.props.tabs.map((tab, i) => {
+                    return (
+                        <TouchableOpacity
+                            key={tab}
+                            onPress={() => this.props.goToPage(i)}
+                            style={styles.tab}>
+                            <Text>
+                                {tab}
+                            </Text>
+                        </TouchableOpacity>
+                    )
+                })}
+            </View>
+            <Animated.View style={[styles.tabUnderlineStyle, { width: tabWidth }, { left, }, ]} />
+        </View>
+    );
   }
 }
 
 FacebookTabBar.propTypes = {
-      goToPage: React.PropTypes.func.isRequired,
       activeTab: React.PropTypes.number.isRequired,
       tabs: React.PropTypes.array.isRequired,
 }
