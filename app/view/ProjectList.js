@@ -7,14 +7,14 @@ import {
     View,
     Text,
     TouchableHighlight,
-    NavigatorIOS,
+    TouchableWithoutFeedback,
     AsyncStorage,
     ListView,
     Image
 } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import Button from 'apsl-react-native-button';
-
-import GoniDashboard from './Dashboard'
+import * as Animatable from 'react-native-animatable';
 
 const GONI_PROJECTS_URL = 'https://dashboard.goniapm.io/api/projects';
 
@@ -28,11 +28,8 @@ export default class GoniProjects extends Component {
         super(props);
         var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this._ListItem = this._ListItem.bind(this);
-        this._MoveDashboard = this._MoveDashboard.bind(this);
         this._getProjectList = this._getProjectList.bind(this);
-
         this._getProjectList()
-
         this.state = {
             token: '',
             testValue: '',
@@ -51,16 +48,6 @@ export default class GoniProjects extends Component {
         });
 
         return projects;
-    }
-
-    _MoveDashboard() {
-        this.props.navigator.push({
-            title: "GoniDashboard",
-            component: GoniDashboard,
-            passProps: {
-                toggleNavBar: this.props.toggleNavBar,
-            }
-        });
     }
 
     async _getProjectList() {
@@ -87,18 +74,22 @@ export default class GoniProjects extends Component {
 
     _ListItem(rowData) {
         return (
-            <View style={{backgroundColor: 'white', margin: 10, borderWidth: 1, borderColor: '#e1e4e6'}}>
-                <View style={{paddingLeft:10, paddingRight: 10, flexDirection: 'row', alignItems: 'stretch', justifyContent: 'center', flex:1}}>
-                    <View style={{ width: 60, alignItems: 'center', justifyContent: 'center'}}>
+            <Animatable.View
+                animation="fadeInDown"
+                easing="ease-in-out"
+                duration={500}
+                style={styles.apiCard}>
+                <View style={styles.cardLayout}>
+                    <View style={styles.projectNum}>
                         <Text style={{color: '#a9afb3'}}>{rowData['is_plus']}</Text>
                         <Text style={{fontSize:20, color: '#a9afb3'}}>No.{rowData['id']}</Text>
                     </View>
-                    <View style={{margin:10, flex: 1, marginLeft: 10}}>
+                    <View style={styles.projectInfo}>
                         <Text style={{fontSize:27}}>{rowData['name']}</Text>
                         <Text style={{fontSize: 8, padding: 3, color: '#2c5ae9', width: 100, borderColor: '#2c5ae9', borderWidth: 0.5, borderRadius: 2}}>APIKEY : {rowData['apikey']}</Text>
                     </View>
                     <TouchableHighlight
-                        onPress={this._MoveDashboard}
+                        onPress={() => Actions.GoniDashboard()}
                         style={{ width:50, alignItems: 'center', justifyContent: 'center'}}>
                         <Image
                             style={{width:40, height: 40}}
@@ -106,7 +97,7 @@ export default class GoniProjects extends Component {
                         />
                     </TouchableHighlight>
                 </View>
-            </View>
+            </Animatable.View>
         );
     }
 
@@ -115,18 +106,7 @@ export default class GoniProjects extends Component {
             <View style={{flex:1}}>
                 <View style={{height: 20, backgroundColor: '#4c80f1'}}></View>
                 <View style={{flex: 1, backgroundColor: '#363a3c', alignItems: 'stretch'}}>
-                    <View style={{marginTop:20, marginBottom:0,  alignItems: 'center'}}>
-                        <Text style={{fontSize: 30, marginBottom:10, color: '#a9afb3', textAlign: 'center'}}>
-                            <Text style={{color: '#4c80f1'}}>Goni</Text>
-                            <Text> Projects</Text>
-                            <Text>{this.state.testValue}</Text>
-                        </Text>
-                        <Image
-                            style={{width: 143, height: 90}}
-                            source={require('../assets/img/goniair.png')}
-                        />
-                    </View>
-                    <View style={{flex: 1, backgroundColor: 'white'}}>
+                    <View style={{flex: 1, backgroundColor: '#f8fafb'}}>
                         <ListView
                             enableEmptySections={true}
                             dataSource={this.state.dataSource}
@@ -138,3 +118,35 @@ export default class GoniProjects extends Component {
         );
     }
 }
+
+var styles = StyleSheet.create({
+    apiCard: {
+        borderWidth: 1,
+        backgroundColor: '#fff',
+        borderColor: 'rgba(0,0,0,0.1)',
+        margin: 5,
+        padding: 5,
+        shadowColor: '#ccc',
+        shadowOffset: { width: 2, height: 2, },
+        shadowOpacity: 0.5,
+        shadowRadius: 3
+    },
+    cardLayout: {
+        paddingLeft:5,
+        paddingRight: 10,
+        flexDirection: 'row',
+        alignItems: 'stretch',
+        justifyContent: 'center',
+        flex:1
+    },
+    projectNum: {
+        width: 60,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    projectInfo: {
+        margin:10,
+        flex: 1,
+        marginLeft: 10
+    }
+})

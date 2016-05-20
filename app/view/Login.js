@@ -3,12 +3,11 @@
 // import React elements
 import React, { Component } from 'react';
 import {
+    StyleSheet,
     View,
     Text,
     TextInput,
     TouchableHighlight,
-    NavigatorIOS,
-    TouchableWithoutFeedback,
     AsyncStorage,
     Image
 } from 'react-native';
@@ -16,15 +15,10 @@ import { Actions } from 'react-native-router-flux';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Button from 'apsl-react-native-button';
 
-import GoniProjects from './ProjectList';
-
-// URL String for use goni api
 const GONI_LOGIN_URL = 'https://dashboard.goniapm.io/api/auth';
 
-// Goni Mobile View Component
 export default class GoniMobileLogin extends Component {
 
-    // constructor -> sett default state
     constructor(props) {
         super(props);
         this.state = {
@@ -33,16 +27,6 @@ export default class GoniMobileLogin extends Component {
             password: 'test',
             testValue: ''
         };
-    }
-
-    _handleChangePage() {
-        this.props.navigator.push({
-            title: "GoniProjects",
-            component: GoniProjects,
-            passProps: {
-                toggleNavBar: this.props.toggleNavBar,
-            }
-        });
     }
 
     _Login() {
@@ -55,14 +39,12 @@ export default class GoniMobileLogin extends Component {
             }
             if (request.status === 200) {
                 var responseJSON = JSON.parse(request.responseText);
-
                 AsyncStorage.setItem('token', responseJSON['token'])
                 .then(() => {
                     AsyncStorage.getItem('token').then((value) => {
                         Actions.GoniProjects();
                     }).done();
                 });
-
             } else {
                 console.warn('error');
             }
@@ -77,39 +59,38 @@ export default class GoniMobileLogin extends Component {
 
     render() {
         return (
-            <View style={{flexDirection: 'column', flex: 1, alignItems:'stretch'}}>
-                <View style={{flex: 0.4, backgroundColor: '#363a3c'}}>
+            <View style={styles.loginContainer}>
+                <View style={styles.logoSection}>
                 </View>
-                <View style={{flex: 0.6, backgroundColor: '#363a3c', padding: 40, paddingBottom: 10}}>
-                    <View style={{flex: 1, alignItems:'stretch', padding: 0}}>
-                        <View style={{flex: 0.4, alignItems:'stretch'}}>
+                <View style={styles.inputSection}>
+                    <View style={styles.inputSectionLayout}>
+                        <View style={styles.inputData}>
                             <View style={{flex: 1}}></View>
-                            <View style={{borderBottomColor:'white', borderBottomWidth: 1, marginBottom:15}}>
+                            <View style={styles.inputDeco}>
                                 <TextInput
                                     placeholder={'E-mail'}
                                     placeholderTextColor={'#eaeeef'}
-                                    style={{alignItems:'stretch', color: 'white', height: 40}}
+                                    style={{color: 'white', height: 40}}
                                     underlineColorAndroid='white'
                                     onChangeText={(text) => {this.setState({email: text})}}
                                 />
                             </View>
-                            <View style={{borderBottomColor:'white', borderBottomWidth: 1, marginBottom:15}}>
+                            <View style={styles.inputDeco}>
                                 <TextInput
                                     placeholder={'Password'}
                                     placeholderTextColor={'#eaeeef'}
-                                    style={{alignItems:'stretch', color: 'white', height: 40}}
+                                    style={{color: 'white', height: 40}}
                                     secureTextEntry={true}
                                     onChangeText={(text) => {this.setState({password: text})}}
                                 />
                             </View>
                             <View style={{flex: 1}}></View>
                         </View>
-                        <View style={{flex: 0.6, flexDirection:'column', alignItems: 'center'}}>
+                        <View style={styles.buttonGroup}>
                             <View style={{flex: 1}}></View>
                             <Button
-                                style={{borderColor: '#4c80f1', backgroundColor: '#4c80f1', borderRadius:30}}
+                                style={styles.loginButton}
                                 textStyle={{fontSize: 18, color: 'white'}}
-                                place
                                 onPressOut={() => { this._Login(); }}>
                                 Log in
                             </Button>
@@ -124,3 +105,45 @@ export default class GoniMobileLogin extends Component {
         );
     }
 }
+
+var styles = StyleSheet.create({
+    loginContainer: {
+        flexDirection: 'column',
+        flex: 1,
+        alignItems: 'stretch'
+    },
+    logoSection: {
+        flex: 0.4,
+        backgroundColor: '#363a3c'
+    },
+    inputSection: {
+        flex: 0.6,
+        backgroundColor: '#363a3c',
+        padding: 40,
+        paddingBottom: 10
+    },
+    inputSectionLayout: {
+        flex: 1,
+        alignItems: 'stretch',
+        padding: 0
+    },
+    inputData: {
+        flex: 0.4,
+        alignItems:'stretch'
+    },
+    inputDeco: {
+        borderBottomColor: 'white',
+        borderBottomWidth: 1,
+        marginBottom: 15
+    },
+    buttonGroup: {
+        flex: 0.6,
+        flexDirection:'column',
+        alignItems: 'center'
+    },
+    loginButton: {
+        borderColor: '#4c80f1',
+        backgroundColor: '#4c80f1',
+        borderRadius:30
+    }
+})
