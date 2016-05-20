@@ -5,23 +5,21 @@ import {
     AppRegistry,
     NavigatorIOS
 } from 'react-native';
-import GoniMobileLogin from './app/view/App'
+import { Router, Scene } from 'react-native-router-flux';
+
+import GoniLogin from './app/view/Login';
+import GoniProjects from './app/view/ProjectList';
+import GoniDashboard from './app/view/Dashboard';
 
 class goniMobile extends Component {
 
     render() {
         return (
-            <NavigatorIOS ref = "nav"
-                itemWrapperStyle={{flex:1}}
-                style={{flex:1}}
-                navigationBarHidden={true}
-                initialRoute={{
-                    title: "Login Page",
-                    component: GoniMobileLogin,
-                    passProps: {
-                        toggleNavBar: this.toggleNavBar,
-                    }
-                }}/>
+            <Router>
+                <Scene key="GoniLogin" component={GoniLogin}  title="GoniLogin" initial={true} hideNavBar={true} />
+                <Scene key="GoniProjects" component={GoniProjects} title="GoniProjects" />
+                <Scene key="GoniDashboard" component={GoniDashboard} title="GoniDashboard" />
+            </Router>
         );
     }
 }
