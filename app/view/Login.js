@@ -12,6 +12,7 @@ import {
     AsyncStorage,
     Image
 } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Button from 'apsl-react-native-button';
 
@@ -58,7 +59,7 @@ export default class GoniMobileLogin extends Component {
                 AsyncStorage.setItem('token', responseJSON['token'])
                 .then(() => {
                     AsyncStorage.getItem('token').then((value) => {
-                        this._handleChangePage();
+                        Actions.GoniProjects();
                     }).done();
                 });
 
