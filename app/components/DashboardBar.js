@@ -5,88 +5,93 @@ import {
   View,
   TouchableOpacity,
   Animated,
+  Image
 } from 'react-native';
 
 export default class FacebookTabBar extends Component {
-  tabIcons: []
 
-  componentDidMount() {
-    this.setAnimationValue({ value: this.props.activeTab, });
-    this._listener = this.props.scrollValue.addListener(this.setAnimationValue);
-  }
+    componentDidMount() {
+        this.setAnimationValue({ value: this.props.activeTab, });
+    }
 
-  setAnimationValue({ value, }) {
+    setAnimationValue({ value, }) {}
 
-  }
+    render() {
+        const tabWidth = this.props.containerWidth / this.props.tabs.length;
+        const left = this.props.scrollValue.interpolate({
+            inputRange: [0, 1, ], outputRange: [0, tabWidth, ],
+        });
 
-  //color between rgb(59,89,152) and rgb(204,204,204)
-  iconColor(progress) {
-    const red = 59 + (204 - 59) * progress;
-    const green = 89 + (204 - 89) * progress;
-    const blue = 152 + (204 - 152) * progress;
-    return `rgb(${red}, ${green}, ${blue})`;
-  }
-
-  render() {
-    const tabWidth = this.props.containerWidth / this.props.tabs.length;
-    const left = this.props.scrollValue.interpolate({
-      inputRange: [0, 1, ], outputRange: [0, tabWidth, ],
-    });
-
-    return (
-        <View>
-            <View style={[styles.tabs, this.props.style, ]}>
-                {this.props.tabs.map((tab, i) => {
-                    return (
-                        <TouchableOpacity
-                            key={tab}
-                            onPress={() => this.props.goToPage(i)}
-                            style={styles.tab}>
-                            <Text>
-                                {tab}
-                            </Text>
-                        </TouchableOpacity>
-                    )
-                })}
+        return (
+            <View>
+                <View style={{flexDirection: 'row', alignItems: 'center', backgroundColor: '#4c80f1', height: 40}}>
+                    <Text style={{color: 'white', fontSize: 18, padding: 8, fontWeight: 'bold'}}>
+                        {this.props.tabs.map((tab, i) => {
+                            if(i === this.props.activeTab) {
+                                return 'Goni ' + tab;
+                            }
+                        })}
+                    </Text>
+                </View>
+                <View style={[styles.tabs, this.props.style]}>
+                    {this.props.tabs.map((tab, i) => {
+                        return (
+                            <TouchableOpacity
+                                key={tab}
+                                onPress={() => this.props.goToPage(i)}
+                                style={styles.tab}>
+                                <Image
+                                    style={{tintColor: '#a9afb3', width:25, height:25}}
+                                    source={this.props.tabIcons[tab]}
+                                />
+                            </TouchableOpacity>
+                        )
+                    })}
+                </View>
+                <Animated.View style={[styles.tabUnderlineStyle, { width: tabWidth }, { left, }, ]} />
             </View>
-            <Animated.View style={[styles.tabUnderlineStyle, { width: tabWidth }, { left, }, ]} />
-        </View>
-    );
-  }
+        );
+    }
 }
 
 FacebookTabBar.propTypes = {
       activeTab: React.PropTypes.number.isRequired,
       tabs: React.PropTypes.array.isRequired,
+      tabIcons: React.PropTypes.object.isRequired
 }
 FacebookTabBar.defaultProps = {
       activeTab: 0,
-      tabs: []
+      tabs: [],
+      tabIcons: {
+          api: require('../assets/icon/api.png'),
+          dashboard: require('../assets/icon/dashboard.png'),
+          setting: require('../assets/icon/setting.png'),
+          metrics: require('../assets/icon/metrics.png')
+      }
 }
 
 const styles = StyleSheet.create({
-  tab: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: 10,
-  },
-  tabs: {
-    height: 45,
-    flexDirection: 'row',
-    paddingTop: 5,
-    borderWidth: 1,
-    borderTopWidth: 0,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    borderBottomColor: 'rgba(0,0,0,0.05)',
-  },
-  tabUnderlineStyle: {
-    position: 'absolute',
-    height: 3,
-    backgroundColor: '#3b5998',
-    bottom: 0,
-  },
+    tab: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingBottom: 10,
+    },
+    tabs: {
+        height: 50,
+        flexDirection: 'row',
+        paddingTop: 5,
+        borderWidth: 1,
+        borderTopWidth: 0,
+        borderLeftWidth: 0,
+        borderRightWidth: 0,
+        borderBottomColor: 'rgba(0,0,0,0.05)',
+        backgroundColor: '#e1e4e6',
+    },
+    tabUnderlineStyle: {
+        position: 'absolute',
+        height: 3,
+        backgroundColor: '#2c5ae9',
+        bottom: 0,
+    }
 });
-
-export default FacebookTabBar;

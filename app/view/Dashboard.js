@@ -14,26 +14,23 @@ import {
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import FacebookTabBar from '../components/DashboardBar';
 
+import SettingSection from '../view/Setting'
+
 export default React.createClass({
-
-    // constructor -> sett state
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         token: this.props.token,
-    //         user: this.props.user
-    //     };
-    // }
-
     render() {
         return (
-            <ScrollableTabView
-                tabBarPosition="bottom"
-                renderTabBar={() => <FacebookTabBar />}>
-                <ScrollView tabLabel="Dashboard" />
-                <ScrollView tabLabel="Flow" />
-                <ScrollView tabLabel="Jest" />
-            </ScrollableTabView>
+            <View style={{flex: 1}}>
+                <View style={{height:20, backgroundColor: '#2c5ae9'}}></View>
+                <ScrollableTabView
+                    tabBarPosition="top"
+                    renderTabBar={() => <FacebookTabBar />}>
+                    <ScrollView tabLabel="dashboard" />
+                    <ScrollView tabLabel="api" />
+                    <ScrollView tabLabel="metrics" />
+                    <SettingSection tabLabel="setting">
+                    </SettingSection>
+                </ScrollableTabView>
+            </View>
         );
     }
 })
