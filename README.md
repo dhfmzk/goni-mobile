@@ -16,17 +16,7 @@ rnpm link
 react-native run-ios
 ```
 
-
-
 ###TODO
-* Refactoring source code
+* ~~Refactoring source code~~ use flux router
 * Draw Dashboard chart
-* Make simple setting view
-
-###Open source library
-1. react
-2. react-native
-3. react-native-device-uuid
-4. react-native-gcm-android
-5. react-native-keyboard-spacer
-6. react-native-scrollable-tab-view
+* ~~Make simple setting view~~ member section
