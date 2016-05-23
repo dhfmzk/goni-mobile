@@ -1,6 +1,5 @@
 'use strict';
 
-// import React elements
 import React, { Component } from 'react';
 import {
     StyleSheet,
@@ -21,7 +20,6 @@ const GONI_PROJECTS_URL = 'https://dashboard.goniapm.io/api/projects';
 var testData =[
 ];
 
-// Projects View Class
 export default class GoniProjects extends Component {
 
     constructor(props) {
