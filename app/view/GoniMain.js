@@ -1,6 +1,5 @@
 'use strict';
 
-// import React elements
 import React, { Component } from 'react';
 import {
     StyleSheet,
@@ -14,9 +13,9 @@ import {
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import FacebookTabBar from '../components/DashboardBar';
 
-import SettingSection from '../view/Setting'
+import SettingSection from '../sections/Setting'
 
-export default React.createClass({
+export default class GoniMain extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
@@ -27,10 +26,9 @@ export default React.createClass({
                     <ScrollView tabLabel="dashboard" />
                     <ScrollView tabLabel="api" />
                     <ScrollView tabLabel="metrics" />
-                    <SettingSection tabLabel="setting">
-                    </SettingSection>
+                    <SettingSection tabLabel="setting" />
                 </ScrollableTabView>
             </View>
         );
     }
-})
+}

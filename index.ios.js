@@ -9,7 +9,7 @@ import { Router, Scene } from 'react-native-router-flux';
 
 import GoniLogin from './app/view/Login';
 import GoniProjects from './app/view/ProjectList';
-import GoniDashboard from './app/view/Dashboard';
+import GoniMain from './app/view/GoniMain';
 
 class goniMobile extends Component {
 
@@ -18,7 +18,7 @@ class goniMobile extends Component {
             <Router>
                 <Scene key="GoniLogin" component={GoniLogin}  title="GoniLogin" initial={true} hideNavBar={true} />
                 <Scene key="GoniProjects" component={GoniProjects} title="GoniProjects" />
-                <Scene key="GoniDashboard" component={GoniDashboard} title="GoniDashboard" />
+                <Scene key="GoniMain" component={GoniMain} title="GoniMain" />
             </Router>
         );
     }
