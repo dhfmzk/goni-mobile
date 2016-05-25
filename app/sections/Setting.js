@@ -7,6 +7,7 @@ import {
     Text,
     ScrollView,
     AsyncStorage,
+    TouchableOpacity,
     Image
 } from 'react-native';
 import Button from 'apsl-react-native-button';
@@ -84,7 +85,7 @@ export default class SettingSection extends Component {
                     </View>
                         <View style={{height:1, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
                     <View style={{alignItems: 'center'}}>
-                        <Text style={{fontSize: 12, marginBottom:20}}>현재 Goni는 Slack notification을 지원하고 있습니다.</Text>
+                        <Text style={{fontSize: 12, marginBottom:20, fontFamily: 'SpoqaHanSans'}}>현재 Goni는 Slack notification을 지원하고 있습니다.</Text>
                         <Text>Send notification to {this.state.slackData['team_name']}{this.state.slackData['channel']}</Text>
                         <Text>Integrated @ {this.state.slackData['created_at']}</Text>
                     </View>
@@ -107,18 +108,41 @@ export default class SettingSection extends Component {
                     </View>
                     <View style={{height:0.5, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
                     <View>
-                        <Text>이 프로젝트에 대한 정보들을 볼수있는 사람들입니다.</Text>
+                        <Text style={{textAlign: 'center', color: 'gray'}}>이 프로젝트에 대한 정보들을 볼수있는 사람들입니다.</Text>
                     </View>
                     <View style={{flexDirection: 'column', alignItems: 'stretch'}}>
                         {this.state.memberData.map((data, i) => {
                             return (
-                                <View key={i} style={{height: 30, borderTopWidth: 1, borderBottomWidth: 1, borderColor: 'rgba(0,0,0,0.1)'}}>
-                                    <Text>
+                                <View key={i} style={{height: 50, borderTopWidth: 1, borderBottomWidth: 1, borderColor: 'rgba(0,0,0,0.1)', flexDirection: 'row' ,alignItems: 'center'}}>
+                                    <Text style={{marginLeft: 10}}>
                                         {data.email}
                                     </Text>
+                                    <View style={{flex:1}}></View>
+                                    <TouchableOpacity
+                                        style={[styles.button, {height: 20,flexDirection: 'row', alignItems:'center', borderColor: '#ff7595', borderWidth: 1}]}>
+                                        <View style={{flex: 1, alignItems:'center'}}>
+                                            <Text style={{fontSize: 12, color: '#ff7595'}}>Remove</Text>
+                                        </View>
+                                    </TouchableOpacity>
                                 </View>
                             )
                         })}
+                    </View>
+                </View>
+                <View style={styles.settingCard}>
+                    <View style={{margin:10}}>
+                        <Text style={{fontSize: 22, color: '#4d5256'}}>Log out</Text>
+                    </View>
+                    <View style={{height:0.5, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
+                    <View>
+                        <Text style={{textAlign: 'center'}}>고니 모바일에서 로그아웃 하시겠습니까?</Text>
+                    </View>
+                    <View style={{padding: 40}}>
+                        <Button
+                            textStyle={{color: '#4c80f1', fontSize: 12}}
+                            style={[styles.button, styles.blue]}>
+                            Log out
+                        </Button>
                     </View>
                 </View>
             </ScrollView>
