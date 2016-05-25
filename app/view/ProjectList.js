@@ -87,7 +87,7 @@ export default class GoniProjects extends Component {
                         <Text style={{fontSize: 8, padding: 3, color: '#2c5ae9', width: 100, borderColor: '#2c5ae9', borderWidth: 0.5, borderRadius: 2}}>APIKEY : {rowData['apikey']}</Text>
                     </View>
                     <TouchableHighlight
-                        onPress={() => Actions.GoniDashboard()}
+                        onPress={() => Actions.GoniMain()}
                         style={{ width:50, alignItems: 'center', justifyContent: 'center'}}>
                         <Image
                             style={{width:40, height: 40}}

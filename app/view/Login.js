@@ -69,8 +69,8 @@ export default class GoniMobileLogin extends Component {
                             <View style={styles.inputDeco}>
                                 <TextInput
                                     placeholder={'E-mail'}
-                                    placeholderTextColor={'#eaeeef'}
-                                    style={{color: 'white', height: 40}}
+                                    placeholderTextColor={'#4d5256'}
+                                    style={{color: '#4c80f1', height: 40}}
                                     underlineColorAndroid='white'
                                     onChangeText={(text) => {this.setState({email: text})}}
                                 />
@@ -78,8 +78,8 @@ export default class GoniMobileLogin extends Component {
                             <View style={styles.inputDeco}>
                                 <TextInput
                                     placeholder={'Password'}
-                                    placeholderTextColor={'#eaeeef'}
-                                    style={{color: 'white', height: 40}}
+                                    placeholderTextColor={'#4d5256'}
+                                    style={{color: '#4c80f1', height: 40}}
                                     secureTextEntry={true}
                                     onChangeText={(text) => {this.setState({password: text})}}
                                 />
@@ -114,11 +114,11 @@ var styles = StyleSheet.create({
     },
     logoSection: {
         flex: 0.4,
-        backgroundColor: '#363a3c'
+        backgroundColor: '#f8fafb'
     },
     inputSection: {
         flex: 0.6,
-        backgroundColor: '#363a3c',
+        backgroundColor: '#f8fafb',
         padding: 40,
         paddingBottom: 10
     },
@@ -132,7 +132,7 @@ var styles = StyleSheet.create({
         alignItems:'stretch'
     },
     inputDeco: {
-        borderBottomColor: 'white',
+        borderBottomColor: '#4c80f1',
         borderBottomWidth: 1,
         marginBottom: 15
     },
