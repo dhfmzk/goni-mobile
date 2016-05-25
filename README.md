@@ -1,7 +1,7 @@
 # goni-mobile
 for mobile push notification and simple chart
 
-### We nedd react-native-cli
+### We need react-native-cli
 Install with the following command:
 ```bash
 npm install -g react-native-cli
@@ -17,6 +17,5 @@ react-native run-ios
 ```
 
 ###TODO
-* ~~Refactoring source code~~ use flux router
-* Draw Dashboard chart
-* ~~Make simple setting view~~ member section
+* Update react native chart v2.0
+* Add refresh button with action button lib
