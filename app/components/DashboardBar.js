@@ -7,6 +7,7 @@ import {
   Animated,
   Image
 } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
 export default class FacebookTabBar extends Component {
 
@@ -24,8 +25,16 @@ export default class FacebookTabBar extends Component {
 
         return (
             <View>
-                <View style={{flexDirection: 'row', alignItems: 'center', backgroundColor: '#4c80f1', height: 40}}>
-                    <Text style={{color: 'white', fontSize: 18, padding: 8, fontWeight: 'bold'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', backgroundColor: '#4c80f1', height: 50}}>
+                    <TouchableOpacity
+                        onPressOut={() => Actions.pop()}
+                        >
+                        <Image
+                            style={{margin: 10, width: 20, height: 20, tintColor: 'white'}}
+                            source={require('../assets/icon/left-arrow.png')}
+                        />
+                    </TouchableOpacity>
+                    <Text style={{fontFamily: 'SpoqaHanSans', color: 'white', fontSize: 18, padding: 8, fontWeight: 'bold'}}>
                         {this.props.tabs.map((tab, i) => {
                             if(i === this.props.activeTab) {
                                 return 'Goni ' + tab;
@@ -90,7 +99,7 @@ const styles = StyleSheet.create({
     },
     tabUnderlineStyle: {
         position: 'absolute',
-        height: 3,
+        height: 2,
         backgroundColor: '#2c5ae9',
         bottom: 0,
     }
