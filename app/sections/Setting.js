@@ -85,7 +85,7 @@ export default class SettingSection extends Component {
                     </View>
                         <View style={{height:1, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
                     <View style={{alignItems: 'center'}}>
-                        <Text style={{fontSize: 12, marginBottom:20, fontFamily: 'SpoqaHanSans'}}>현재 Goni는 Slack notification을 지원하고 있습니다.</Text>
+                        <Text style={{fontSize: 12, marginBottom:20, fontFamily: 'SpoqaHanSans'}}>Currently Goni supports Slack notification.</Text>
                         <Text>Send notification to {this.state.slackData['team_name']}{this.state.slackData['channel']}</Text>
                         <Text>Integrated @ {this.state.slackData['created_at']}</Text>
                     </View>
@@ -108,7 +108,7 @@ export default class SettingSection extends Component {
                     </View>
                     <View style={{height:0.5, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
                     <View>
-                        <Text style={{textAlign: 'center', color: 'gray'}}>이 프로젝트에 대한 정보들을 볼수있는 사람들입니다.</Text>
+                        <Text style={{textAlign: 'center', color: 'gray'}}>Members who participated in this project.</Text>
                     </View>
                     <View style={{flexDirection: 'column', alignItems: 'stretch'}}>
                         {this.state.memberData.map((data, i) => {
@@ -135,7 +135,7 @@ export default class SettingSection extends Component {
                     </View>
                     <View style={{height:0.5, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
                     <View>
-                        <Text style={{textAlign: 'center'}}>고니 모바일에서 로그아웃 하시겠습니까?</Text>
+                        <Text style={{textAlign: 'center'}}>Are you sure you want to log out?</Text>
                     </View>
                     <View style={{padding: 40}}>
                         <Button
