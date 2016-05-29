@@ -17,5 +17,8 @@ react-native run-ios
 ```
 
 ###TODO
-* Update react native chart v2.0
-* Add refresh button with action button lib
+* ~~Update react native chart v2.0~~
+  * Just Make line chart lib for RN 0.27.3 using View and StyleSheet
+* Add action button with [https://github.com/mastermoo/react-native-action-button]
+  * refresh button 
+  * select api path button
