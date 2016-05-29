@@ -34,7 +34,7 @@ export default class FacebookTabBar extends Component {
                             source={require('../assets/icon/left-arrow.png')}
                         />
                     </TouchableOpacity>
-                    <Text style={{fontFamily: 'SpoqaHanSans', color: 'white', fontSize: 18, padding: 8, fontWeight: 'bold'}}>
+                    <Text style={{color: 'white', fontSize: 18, padding: 8, fontWeight: 'bold'}}>
                         {this.props.tabs.map((tab, i) => {
                             if(i === this.props.activeTab) {
                                 return 'Goni ' + tab;
