@@ -7,11 +7,13 @@ import {
     Text,
     TextInput,
     TouchableHighlight,
-    NavigatorIOS,
-    ScrollView
+    ScrollView,
+    Image
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import FacebookTabBar from '../components/DashboardBar';
+import ActionButton from 'react-native-action-button';
+
+import DashboardBar from '../components/DashboardBar';
 
 import DashboardSection from '../sections/Dashboard'
 import APISection from '../sections/API'
@@ -25,12 +27,26 @@ export default class GoniMain extends Component {
                 <View style={{height:20, backgroundColor: '#2c5ae9'}}></View>
                 <ScrollableTabView
                     tabBarPosition="top"
-                    renderTabBar={() => <FacebookTabBar />}>
+                    renderTabBar={() => <DashboardBar />}>
                     <DashboardSection tabLabel="dashboard" />
                     <APISection tabLabel="api" />
                     <MetricsSection tabLabel="metrics" />
                     <SettingSection tabLabel="setting" />
                 </ScrollableTabView>
+                <ActionButton buttonColor="#4c80f1">
+                    <ActionButton.Item buttonColor='#4c80f1' title="Api path" onPress={() => console.log("notes tapped!")}>
+                        <Image
+                            style={{margin: 10, width: 20, height: 20, tintColor: 'white'}}
+                            source={require('../assets/icon/left-arrow.png')}
+                        />
+                    </ActionButton.Item>
+                    <ActionButton.Item buttonColor='#3498db' title="Refresh" onPress={() => {}}>
+                        <Image
+                            style={{margin: 10, width: 20, height: 20, tintColor: 'white'}}
+                            source={require('../assets/icon/left-arrow.png')}
+                        />
+                    </ActionButton.Item>
+                </ActionButton>
             </View>
         );
     }
