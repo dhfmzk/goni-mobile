@@ -8,6 +8,9 @@ import {
     TouchableHighlight,
     ScrollView
 } from 'react-native';
+import {
+    LineChart,
+} from 'react-native-vs-charts'
 
 export default class DashboardSection extends Component {
 
