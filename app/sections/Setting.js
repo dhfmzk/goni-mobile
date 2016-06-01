@@ -145,6 +145,22 @@ export default class SettingSection extends Component {
                         </Button>
                     </View>
                 </View>
+                <View style={styles.settingCard}>
+                    <View style={{margin:10}}>
+                        <Text style={{fontSize: 22, color: '#4d5256'}}>Open Source</Text>
+                    </View>
+                    <View style={{height:0.5, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
+                    <View>
+                        <Text style={{textAlign: 'center'}}>사용한 오픈소스 라이브러리 리스트</Text>
+                    </View>
+                    <View style={{padding: 40}}>
+                        <Button
+                            textStyle={{color: '#4c80f1', fontSize: 12}}
+                            style={[styles.button, styles.blue]}>
+                            리스트 확인하기
+                        </Button>
+                    </View>
+                </View>
             </ScrollView>
         );
     }
