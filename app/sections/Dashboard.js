@@ -5,7 +5,7 @@ import {
     StyleSheet,
     View,
     Text,
-    TouchableHighlight,
+    TouchableOpacity,
     ScrollView
 } from 'react-native';
 import {
@@ -15,6 +15,12 @@ import {
     makeRange,
     generateScale
 } from 'react-native-vs-charts'
+import HitmapChart from '../components/HitmapChart'
+import FullBarChart from '../components/FullBarChart'
+
+const GONIPLUS_ROOT_URI = 'https://dashboard.goniapm.io/api/goniplus/'
+const SUFFIX_CPU = '/overview/dashboard/cpu'
+
 
 var testData1 = [
     {name: 'test1', primaryColor: '#2c5ae9', secondaryColor: 'white', values: [10, 4, 6, 7, 8,12,18,23,11,12, 9]}
@@ -35,12 +41,44 @@ export default class DashboardSection extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            CPUData: ''
         };
+    }
+
+    async _getDashboardCPU() {
+        var token = await AsyncStorage.getItem('token');
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = (e) => {
+            if (request.readyState !== 4) {
+                return;
+            }
+            if (request.status === 200) {
+                var responseJSON = JSON.parse(request.responseText);
+                this.setState({
+                    CPUData: responseJSON
+                })
+            } else {
+                console.warn('error');
+            }
+        };
+        request.open('GET', GONIPLUS_ROOT_URI+this.props.projectKey+SUFFIX_CPU);
+        request.setRequestHeader('Authorization', 'Bearer ' + token);
+        request.send();
     }
 
     render() {
         return (
             <ScrollView style={{flex: 1, flexDirection: 'column', backgroundColor: '#f8fafb'}}>
+
+                <View style={styles.settingCard}>
+                    <View style={{margin:10}}>
+                        <Text style={{fontSize: 22, color: '#4d5256'}}>CPU Hitmap</Text>
+                    </View>
+                    <View style={{height:1, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
+                    <HitmapChart
+                        colorStream={['#E1E4E6', '#87b1f3', '#6b9df3', '#5188f2', '#3b72ef', '#2c5ae9']}
+                        dataSet={this.state.CPUData}/>
+                </View>
                 <View style={styles.settingCard}>
                     <View style={{margin:10}}>
                         <Text style={{fontSize: 22, color: '#4d5256'}}>Active User</Text>
@@ -69,31 +107,18 @@ export default class DashboardSection extends Component {
                 </View>
                 <View style={styles.settingCard}>
                     <View style={{margin:10}}>
-                        <Text style={{fontSize: 22, color: '#4d5256'}}>Top 5 Transactions</Text>
+                        <Text style={{fontSize: 22, color: '#4d5256'}}>Top 5 Transection</Text>
                     </View>
                     <View style={{height:1, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
-                    <Axes
-                        style={{height: 300, paddingRight: 10}}
-                        showCategoryTicks={false}
-                        showCategoryGridlines={false}
-                        showValueGridlines={false}
-                        valueAxisStyle={{axisLineWidth: 1, axisLineColor: '#a9afb3', gridlineColor: '#a9afb3'}}
-                        categoryAxisStyle={{axisLineWidth: 1, axisLineColor: '#a9afb3', gridlineColor: '#ced3d6'}}
-                        valueLabelStyle={{color: '#a9afb3'}}
-                        categoryLabelStyle={{color: '#a9afb3'}}
-                        valueScale={{min: 0, max: 100, unit: 10}}
-                        categoryLabels={['api1', 'api6', 'api4', 'api2', 'api3']}
-                        orientation='horizontal'>
-                        <BarChart
-                            style={{height: 300}}
-                            spacing={1}
-                            clusterSpacing={1}
-                            barBorderWidth={1}
-                            displayMode={'stacked'}
-                            datasets={testData2}
-                            valueScale={{min: 0, max: 100, unit: 10}}
-                        />
-                    </Axes>
+                    <View>
+                        <View>
+                        </View>
+                    </View>
+                    <FullBarChart dataSet={[80,10,10]} barLabel={'api/asdfg/tester'}/>
+                    <FullBarChart dataSet={[75,11,14]} barLabel={'api/asdfg/tester2'}/>
+                    <FullBarChart dataSet={[78,13, 9]} barLabel={'api/asdfg/tester4'}/>
+                    <FullBarChart dataSet={[74,12,14]} barLabel={'api/asdfg/tester3'}/>
+                    <FullBarChart dataSet={[74,12,14]} barLabel={'api/asdfg/tester12'}/>
                 </View>
             </ScrollView>
         );

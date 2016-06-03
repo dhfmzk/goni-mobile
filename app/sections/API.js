@@ -17,6 +17,18 @@ export default class APISection extends Component {
         };
     }
 
+    async _getApiPath(_metrics) {
+
+    }
+
+    async _getApiResponse() {
+
+    }
+
+    async _getApiStatics() {
+        
+    }
+
     render() {
         return (
             <ScrollView style={{flex: 1, flexDirection: 'column', backgroundColor: '#f8fafb'}}>

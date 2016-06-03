@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import {
+    Linking,
     StyleSheet,
     View,
     Text,
@@ -11,9 +12,13 @@ import {
     Image
 } from 'react-native';
 import Button from 'apsl-react-native-button';
+import { Actions } from 'react-native-router-flux';
 
-const GONI_SLACK_URL = 'https://dashboard.goniapm.io/api/project/1/notification/slack';
-const GONI_MEMBER_URL = 'https://dashboard.goniapm.io/api/project/1/member';
+import gStyles from '../styles/global';
+
+const GONI_ROOT_URI = 'https://dashboard.goniapm.io/api/project/'
+const SUFFIX_SLACK = '/notification/slack'
+const SUFFIX_MEMBER = '/member'
 
 export default class SettingSection extends Component {
     constructor(props) {
@@ -26,6 +31,17 @@ export default class SettingSection extends Component {
             slackData: '',
             memberData: []
         };
+    }
+    componentDidMount() {
+        var url = Linking.getInitialURL().then((url) => {
+            if (url) {
+                console.log('Initial url is: ' + url);
+            }
+        }).catch(err => console.error('An error occurred', err));
+}
+
+    _logout() {
+        Actions.GoniLogin();
     }
 
     async _getSlackData() {
@@ -44,7 +60,7 @@ export default class SettingSection extends Component {
                 console.warn('error');
             }
         };
-        request.open('GET', GONI_SLACK_URL);
+        request.open('GET', GONI_ROOT_URI+this.props.projectID+SUFFIX_SLACK);
         request.setRequestHeader('Authorization', 'Bearer ' + token);
         request.send();
     }
@@ -65,15 +81,25 @@ export default class SettingSection extends Component {
                 console.warn('error');
             }
         };
-        request.open('GET', GONI_MEMBER_URL);
+        request.open('GET', GONI_ROOT_URI+this.props.projectID+SUFFIX_MEMBER);
         request.setRequestHeader('Authorization', 'Bearer ' + token);
         request.send();
+    }
+
+    _Configure() {
+        Linking.canOpenURL(this.state.slackData['configuration_url']).then(supported => {
+            if (supported) {
+                Linking.openURL(this.state.slackData['configuration_url']);
+            } else {
+                console.log('Don\'t know how to open URI: ' + this.state.slackData['configuration_url']);
+            }
+        });
     }
 
     render() {
         return (
             <ScrollView style={{flex: 1, flexDirection: 'column', backgroundColor: '#f8fafb'}}>
-                <View style={styles.settingCard}>
+                <View style={gStyles.card}>
                     <View style={{margin:10}}>
                         <Text style={{fontSize: 22, color: '#4d5256'}}>TestAPI</Text>
                     </View>
@@ -83,32 +109,41 @@ export default class SettingSection extends Component {
                             source={require('../assets/img/slack.png')}
                         />
                     </View>
-                        <View style={{height:1, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
+                    <View style={{height:0.5, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
                     <View style={{alignItems: 'center'}}>
                         <Text style={{fontSize: 12, marginBottom:20, fontFamily: 'SpoqaHanSans'}}>Currently Goni supports Slack notification.</Text>
                         <Text>Send notification to {this.state.slackData['team_name']}{this.state.slackData['channel']}</Text>
                         <Text>Integrated @ {this.state.slackData['created_at']}</Text>
                     </View>
                     <View style={{flexDirection: 'row', marginTop: 20}}>
-                        <Button
+                        <TouchableOpacity
+                            onPressOut={() => this._Configure()}
                             textStyle={{color: '#4c80f1', fontSize: 12}}
                             style={[styles.button, styles.blue]}>
-                            Configure
-                        </Button>
-                        <Button
+                            <View style={{flex: 1, alignItems:'center', flexDirection: 'column'}}>
+                                <View style={{flex: 1, alignItems: 'center', flexDirection: 'row'}}>
+                                    <Text style={{fontSize: 12, color: '#4c80f1'}}>Configure</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
                             textStyle={{color: '#ff7595', fontSize: 12}}
                             style={[styles.button, styles.red]}>
-                            Remove
-                        </Button>
+                            <View style={{flex: 1, alignItems:'center', flexDirection: 'column'}}>
+                                <View style={{flex: 1, alignItems: 'center', flexDirection: 'row'}}>
+                                    <Text style={{fontSize: 12, color: '#ff7595'}}>Remove</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
-                <View style={styles.settingCard}>
+                <View style={gStyles.card}>
                     <View style={{margin:10}}>
                         <Text style={{fontSize: 22, color: '#4d5256'}}>Member</Text>
                     </View>
-                    <View style={{height:0.5, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
+                    <View style={styles.decoLine}></View>
                     <View>
-                        <Text style={{textAlign: 'center', color: 'gray'}}>Members who participated in this project.</Text>
+                        <Text style={{textAlign: 'center', color: 'gray', marginBottom: 30}}>Members who participated in this project.</Text>
                     </View>
                     <View style={{flexDirection: 'column', alignItems: 'stretch'}}>
                         {this.state.memberData.map((data, i) => {
@@ -119,7 +154,8 @@ export default class SettingSection extends Component {
                                     </Text>
                                     <View style={{flex:1}}></View>
                                     <TouchableOpacity
-                                        style={[styles.button, {height: 20,flexDirection: 'row', alignItems:'center', borderColor: '#ff7595', borderWidth: 1}]}>
+                                        style={[styles.button, {height: 20,flexDirection: 'row', alignItems:'center', borderColor: '#ff7595', borderWidth: 1}]}
+                                        onPressOut={() => this._logout()}>
                                         <View style={{flex: 1, alignItems:'center'}}>
                                             <Text style={{fontSize: 12, color: '#ff7595'}}>Remove</Text>
                                         </View>
@@ -129,36 +165,24 @@ export default class SettingSection extends Component {
                         })}
                     </View>
                 </View>
-                <View style={styles.settingCard}>
+                <View style={gStyles.card}>
                     <View style={{margin:10}}>
                         <Text style={{fontSize: 22, color: '#4d5256'}}>Log out</Text>
                     </View>
-                    <View style={{height:0.5, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
+                    <View style={styles.decoLine}></View>
                     <View>
                         <Text style={{textAlign: 'center'}}>Are you sure you want to log out?</Text>
                     </View>
                     <View style={{padding: 40}}>
-                        <Button
-                            textStyle={{color: '#4c80f1', fontSize: 12}}
-                            style={[styles.button, styles.blue]}>
-                            Log out
-                        </Button>
-                    </View>
-                </View>
-                <View style={styles.settingCard}>
-                    <View style={{margin:10}}>
-                        <Text style={{fontSize: 22, color: '#4d5256'}}>Open Source</Text>
-                    </View>
-                    <View style={{height:0.5, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
-                    <View>
-                        <Text style={{textAlign: 'center'}}>사용한 오픈소스 라이브러리 리스트</Text>
-                    </View>
-                    <View style={{padding: 40}}>
-                        <Button
-                            textStyle={{color: '#4c80f1', fontSize: 12}}
-                            style={[styles.button, styles.blue]}>
-                            리스트 확인하기
-                        </Button>
+                        <TouchableOpacity
+                            style={[styles.button, styles.red, {height: 50}]}
+                            onPressOut={() => this._logout()}>
+                            <View style={{flex: 1, alignItems:'center'}}>
+                                <Text style={{fontSize: 20, color: '#ff7595'}}>
+                                    Log out
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </ScrollView>
@@ -167,20 +191,10 @@ export default class SettingSection extends Component {
 }
 
 var styles = StyleSheet.create({
-    settingCard: {
-        borderWidth: 1,
-        backgroundColor: '#fff',
-        borderColor: 'rgba(0,0,0,0.1)',
-        margin: 5,
-        padding: 5,
-        shadowColor: '#ccc',
-        shadowOffset: { width: 2, height: 2, },
-        shadowOpacity: 0.5,
-        shadowRadius: 3
-    },
     button: {
         flex: 0.5,
         height: 30,
+        borderWidth: 1,
         borderColor: '#5f6466',
         borderRadius: 4,
         padding: 10,
@@ -191,5 +205,12 @@ var styles = StyleSheet.create({
     },
     blue: {
         borderColor: '#4c80f1'
+    },
+    decoLine: {
+        height:0.5,
+        backgroundColor: 'gray',
+        margin: 15,
+        marginLeft: 20,
+        marginRight: 20
     }
 })

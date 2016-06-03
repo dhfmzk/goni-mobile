@@ -17,6 +17,18 @@ export default class MetricsSection extends Component {
         };
     }
 
+    async _getMetricsInstance(_metrics) {
+
+    }
+
+    async _getRuntimeData(_instance) {
+
+    }
+
+    async _getExpvarData(_instance) {
+
+    }
+
     render() {
         return (
             <ScrollView style={{flex: 1, flexDirection: 'column', backgroundColor: '#f8fafb'}}>
