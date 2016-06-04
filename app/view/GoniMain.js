@@ -5,8 +5,6 @@ import {
     StyleSheet,
     View,
     Text,
-    TextInput,
-    TouchableHighlight,
     ScrollView,
     Image
 } from 'react-native';
@@ -21,32 +19,26 @@ import MetricsSection from '../sections/Metrics'
 import SettingSection from '../sections/Setting'
 
 export default class GoniMain extends Component {
+
+    constructor(prop) {
+        super(prop)
+        this.state = {
+        }
+    }
+
     render() {
         return (
             <View style={{flex: 1}}>
                 <View style={{height:20, backgroundColor: '#2c5ae9'}}></View>
                 <ScrollableTabView
                     tabBarPosition="top"
+                    locked={true}
                     renderTabBar={() => <DashboardBar />}>
-                    <DashboardSection tabLabel="dashboard" />
-                    <APISection tabLabel="api" />
-                    <MetricsSection tabLabel="metrics" />
-                    <SettingSection tabLabel="setting" />
+                    <DashboardSection projectID={this.props.projectID} tabLabel="dashboard" />
+                    <APISection projectID={this.props.projectID} tabLabel="api" />
+                    <MetricsSection projectID={this.props.projectID} tabLabel="metrics" />
+                    <SettingSection projectID={this.props.projectID} tabLabel="setting" />
                 </ScrollableTabView>
-                <ActionButton buttonColor="#4c80f1">
-                    <ActionButton.Item buttonColor='#4c80f1' title="Api path" onPress={() => console.log("notes tapped!")}>
-                        <Image
-                            style={{margin: 10, width: 20, height: 20, tintColor: 'white'}}
-                            source={require('../assets/icon/left-arrow.png')}
-                        />
-                    </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#3498db' title="Refresh" onPress={() => {}}>
-                        <Image
-                            style={{margin: 10, width: 20, height: 20, tintColor: 'white'}}
-                            source={require('../assets/icon/left-arrow.png')}
-                        />
-                    </ActionButton.Item>
-                </ActionButton>
             </View>
         );
     }
