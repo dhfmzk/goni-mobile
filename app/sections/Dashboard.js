@@ -6,7 +6,8 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    AsyncStorage
 } from 'react-native';
 import {
     Axes,
@@ -15,34 +16,28 @@ import {
     makeRange,
     generateScale
 } from 'react-native-vs-charts'
-import HitmapChart from '../components/HitmapChart'
+import * as Animatable from 'react-native-animatable'
+import HeatmapChart from '../components/HeatmapChart'
 import FullBarChart from '../components/FullBarChart'
+
+import gStyles from '../styles/global'
 
 const GONIPLUS_ROOT_URI = 'https://dashboard.goniapm.io/api/goniplus/'
 const SUFFIX_CPU = '/overview/dashboard/cpu'
-
-
-var testData1 = [
-    {name: 'test1', primaryColor: '#2c5ae9', secondaryColor: 'white', values: [10, 4, 6, 7, 8,12,18,23,11,12, 9]}
-]
-var testData2 = [
-    {name: 'test1', primaryColor: '#7cd06b', secondaryColor: 'white', values: [68,73,71,62,89]},
-    {name: 'test2', primaryColor: '#ffda00', secondaryColor: 'white', values: [20,13,24,15, 6]},
-    {name: 'test3', primaryColor: '#ff7595', secondaryColor: 'white', values: [12,14, 5,23, 5]}
-]
-var testData3 = [
-    {name: 'test1', primaryColor: '#2c5ae9', secondaryColor: 'white', values: [10, 4, 6, 7, 8,12,18,23,11,12, 9]},
-    {name: 'test2', primaryColor: '#4c80f1', secondaryColor: 'white', values: [10, 8, 7, 5, 7, 9,10, 3, 4, 5,16]},
-    {name: 'test3', primaryColor: '#87b1f3', secondaryColor: 'white', values: [10,18,17,18,15, 9, 2, 4,15,13, 5]}
-]
 
 export default class DashboardSection extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            CPUData: ''
+            CPUData: [],
+            isCPULoaded: false,
+            isTransectionLoaded: false,
+            isActiveUserLoaded: false
         };
+    }
+    componentDidMount() {
+        this._getDashboardCPU()
     }
 
     async _getDashboardCPU() {
@@ -54,8 +49,10 @@ export default class DashboardSection extends Component {
             }
             if (request.status === 200) {
                 var responseJSON = JSON.parse(request.responseText);
+
                 this.setState({
-                    CPUData: responseJSON
+                    CPUData: this._processCPUData(responseJSON),
+                    isCPULoaded: true
                 })
             } else {
                 console.warn('error');
@@ -66,24 +63,87 @@ export default class DashboardSection extends Component {
         request.send();
     }
 
+    _processCPUData(_data) {
+        var timeList = []
+        var aData = []
+        var date = new Date();
+        for (const i of Array(7).fill(0).map((_, i) => 6-i)) {
+            if(date.getHours()<i) {
+                timeList.push((date.getHours()-i+24)+':00')
+            }else {
+                timeList.push((date.getHours()-i)+':00')
+            }
+        }
+        timeList.map((time) => {
+            var temp = {}
+            temp['time'] = time
+            temp['hit'] = [0,0,0,0,0,0,0,0,0,0,0,0]
+            aData.push(temp)
+        })
+        aData.map((item) => {
+            for (const key of Object.keys(_data)) {
+                var d = new Date(Number.parseInt(key)*1000);
+                if(item['time'] == d.getHours()+':00') {
+                    var index = Number.parseInt(d.getMinutes())/5
+                    item['hit'][index] = Math.ceil(_data[key]/20)
+                }
+            }
+        })
+        return aData;
+    }
+
     render() {
         return (
             <ScrollView style={{flex: 1, flexDirection: 'column', backgroundColor: '#f8fafb'}}>
+                {this._renderCPU()}
+                {this._renderActiveUser()}
+                {this._renderTransection()}
+            </ScrollView>
+        );
+    }
 
-                <View style={styles.settingCard}>
-                    <View style={{margin:10}}>
-                        <Text style={{fontSize: 22, color: '#4d5256'}}>CPU Hitmap</Text>
+    _renderCPU() {
+        if(this.state.isCPULoaded) {
+            return (
+                <Animatable.View animation="fadeInDown" easing="ease-out" style={[gStyles.card, {paddingBottom: 20}]}>
+                    <View style={{margin:10, flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={{fontSize: 22, color: '#4d5256'}}>System Status</Text>
+                        <Text style={{marginLeft: 8, borderRadius: 2, borderColor: '#2c5ae9', borderWidth: 0.8, padding: 2, fontSize: 8, width: 35, textAlign: 'center', color: '#2c5ae9'}}>CPU</Text>
                     </View>
-                    <View style={{height:1, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
-                    <HitmapChart
+                    <View style={gStyles.decoBar}></View>
+                    <HeatmapChart
                         colorStream={['#E1E4E6', '#87b1f3', '#6b9df3', '#5188f2', '#3b72ef', '#2c5ae9']}
                         dataSet={this.state.CPUData}/>
-                </View>
-                <View style={styles.settingCard}>
+                </Animatable.View>
+            );
+        }else {
+            return(
+                <Animatable.View animation="fadeInDown" easing="ease-out" style={gStyles.card}>
+                    <View style={{margin:10, flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={{fontSize: 22, color: '#4d5256'}}>System Status</Text>
+                        <Text style={{marginLeft: 8, borderRadius: 2, borderColor: '#2c5ae9', borderWidth: 0.8, padding: 2, fontSize: 8, width: 35, textAlign: 'center', color: '#2c5ae9'}}>CPU</Text>
+                    </View>
+                    <View style={gStyles.decoBar}></View>
+                    <View style={{flexDirection: 'column', alignItems: 'center', height: 250}}>
+                        <View style={{flex:1, flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={{fontSize: 20}}>
+                                잠시만 기다려주세요
+                            </Text>
+                        </View>
+                    </View>
+                </Animatable.View>
+            );
+        }
+    }
+
+    _renderActiveUser() {
+        if(this.state.isActiveUserLoaded) {
+            return (
+                <Animatable.View animation="fadeInDown" easing="ease-out" style={gStyles.card}>
                     <View style={{margin:10}}>
                         <Text style={{fontSize: 22, color: '#4d5256'}}>Active User</Text>
                     </View>
-                    <View style={{height:1, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
+                    <View style={gStyles.decoBar}></View>
                     <Axes
                         style={{height: 150, paddingRight: 10}}
                         showCategoryTicks={false}
@@ -104,12 +164,35 @@ export default class DashboardSection extends Component {
                             valueScale={{min: 0, max: 13, unit: 1}}
                         />
                     </Axes>
-                </View>
-                <View style={styles.settingCard}>
+                </Animatable.View>
+            );
+        }else {
+            return (
+                <Animatable.View animation="fadeInDown" easing="ease-out" style={gStyles.card}>
+                    <View style={{margin:10}}>
+                        <Text style={{fontSize: 22, color: '#4d5256'}}>Active User</Text>
+                    </View>
+                    <View style={gStyles.decoBar}></View>
+                    <View style={{flexDirection: 'column', alignItems: 'center', height: 250}}>
+                        <View style={{flex:1, flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={{fontSize: 20}}>
+                                Status Box를 선택해주세요
+                            </Text>
+                        </View>
+                    </View>
+                </Animatable.View>
+            );
+        }
+    }
+
+    _renderTransection() {
+        if(this.state.isTransectionLoaded) {
+            return (
+                <Animatable.View animation="fadeInDown" easing="ease-out" style={gStyles.card}>
                     <View style={{margin:10}}>
                         <Text style={{fontSize: 22, color: '#4d5256'}}>Top 5 Transection</Text>
                     </View>
-                    <View style={{height:1, backgroundColor: 'gray', margin: 15, marginLeft: 20, marginRight: 20}}></View>
+                    <View style={gStyles.decoBar}></View>
                     <View>
                         <View>
                         </View>
@@ -119,25 +202,29 @@ export default class DashboardSection extends Component {
                     <FullBarChart dataSet={[78,13, 9]} barLabel={'api/asdfg/tester4'}/>
                     <FullBarChart dataSet={[74,12,14]} barLabel={'api/asdfg/tester3'}/>
                     <FullBarChart dataSet={[74,12,14]} barLabel={'api/asdfg/tester12'}/>
-                </View>
-            </ScrollView>
-        );
+                </Animatable.View>
+            );
+        }else {
+            return (
+                <Animatable.View animation="fadeInDown" easing="ease-out" style={gStyles.card}>
+                    <View style={{margin:10}}>
+                        <Text style={{fontSize: 22, color: '#4d5256'}}>Top 5 Transection</Text>
+                    </View>
+                    <View style={gStyles.decoBar}></View>
+                    <View style={{flexDirection: 'column', alignItems: 'center', height: 250}}>
+                        <View style={{flex:1, flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={{fontSize: 20}}>
+                                Status Box를 선택해주세요
+                            </Text>
+                        </View>
+                    </View>
+                </Animatable.View>
+            );
+        }
     }
 }
 
 var styles = StyleSheet.create({
-    settingCard: {
-        borderWidth: 1,
-        backgroundColor: '#fff',
-        borderColor: 'rgba(0,0,0,0.1)',
-        margin: 5,
-        padding: 5,
-        shadowColor: '#ccc',
-        shadowOffset: { width: 2, height: 2, },
-        shadowOpacity: 0.5,
-        shadowRadius: 3,
-        paddingBottom: 20,
-    },
     button: {
         flex: 0.5,
         height: 30,
