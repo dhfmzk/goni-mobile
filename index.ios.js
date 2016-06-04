@@ -16,9 +16,9 @@ class goniMobile extends Component {
     render() {
         return (
             <Router>
-                <Scene key="GoniLogin" direction={'vertical'} panHandlers={null} component={GoniLogin}  title="GoniLogin" initial={true} hideNavBar={true} />
-                <Scene key="GoniProjects" direction={'vertical'} panHandlers={null} component={GoniProjects} title="GoniProjects" hideTabBar={true} />
-                <Scene key="GoniMain" direction={'vertical'} panHandlers={null} component={GoniMain} title="GoniMain" hideTabBar={true} />
+                <Scene key="GoniLogin" direction={'vertical'} duration={1} panHandlers={null} component={GoniLogin}  title="GoniLogin" initial={true} hideNavBar={true} />
+                <Scene key="GoniProjects" direction={'vertical'} duration={1} panHandlers={null} component={GoniProjects} title="GoniProjects" hideTabBar={true} />
+                <Scene key="GoniMain" direction={'vertical'} duration={1} panHandlers={null} component={GoniMain} title="GoniMain" hideTabBar={true} />
             </Router>
         );
     }
