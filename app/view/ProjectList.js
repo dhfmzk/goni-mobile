@@ -5,7 +5,7 @@ import {
     StyleSheet,
     View,
     Text,
-    TouchableHighlight,
+    TouchableOpacity,
     TouchableWithoutFeedback,
     AsyncStorage,
     ListView,
@@ -42,7 +42,6 @@ export default class GoniProjects extends Component {
             }else {
                 project['is_plus'] = 'Goni';
             }
-            project['apikey'] = project['apikey'].substr(0,12);
         });
 
         return projects;
@@ -84,16 +83,16 @@ export default class GoniProjects extends Component {
                     </View>
                     <View style={styles.projectInfo}>
                         <Text style={{fontSize:27}}>{rowData['name']}</Text>
-                        <Text style={{fontSize: 8, padding: 3, color: '#2c5ae9', width: 100, borderColor: '#2c5ae9', borderWidth: 0.5, borderRadius: 2}}>APIKEY : {rowData['apikey']}</Text>
+                        <Text style={{fontSize: 8, padding: 3, color: '#2c5ae9', width: 100, borderColor: '#2c5ae9', borderWidth: 0.5, borderRadius: 2}}>APIKEY : {rowData['apikey'].substr(0,12)}</Text>
                     </View>
-                    <TouchableHighlight
-                        onPress={() => Actions.GoniMain()}
+                    <TouchableOpacity
+                        onPress={() => Actions.GoniMain({projectID: rowData['id'], projectName: rowData['name'], projectKey: rowData['apikey']})}
                         style={{ width:50, alignItems: 'center', justifyContent: 'center'}}>
                         <Image
                             style={{width:40, height: 40}}
                             source={require('../assets/img/goButton.png')}
                         />
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>
             </Animatable.View>
         );
@@ -102,7 +101,12 @@ export default class GoniProjects extends Component {
     render() {
         return (
             <View style={{flex:1}}>
-                <View style={{height: 20, backgroundColor: '#4c80f1'}}></View>
+                <View style={{height: 20, backgroundColor: '#2c5ae9'}}></View>
+                <View style={{height: 50, backgroundColor: '#4c80f1', flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={{color: 'white', fontSize: 18, padding: 8, fontWeight: 'bold'}}>
+                        Project List
+                    </Text>
+                </View>
                 <View style={{flex: 1, backgroundColor: '#363a3c', alignItems: 'stretch'}}>
                     <View style={{flex: 1, backgroundColor: '#f8fafb'}}>
                         <ListView

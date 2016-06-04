@@ -90,7 +90,7 @@ export default class GoniMobileLogin extends Component {
                             <View style={{flex: 1}}></View>
                             <Button
                                 style={styles.loginButton}
-                                textStyle={{fontSize: 18, color: 'white'}}
+                                textStyle={{fontSize: 18, color: '#4c80f1'}}
                                 onPressOut={() => { this._Login(); }}>
                                 Log in
                             </Button>
@@ -114,11 +114,11 @@ var styles = StyleSheet.create({
     },
     logoSection: {
         flex: 0.4,
-        backgroundColor: '#f8fafb'
+        backgroundColor: '#4c80f1'
     },
     inputSection: {
         flex: 0.6,
-        backgroundColor: '#f8fafb',
+        backgroundColor: '#4c80f1',
         padding: 40,
         paddingBottom: 10
     },
@@ -132,7 +132,7 @@ var styles = StyleSheet.create({
         alignItems:'stretch'
     },
     inputDeco: {
-        borderBottomColor: '#4c80f1',
+        borderBottomColor: 'white',
         borderBottomWidth: 1,
         marginBottom: 15
     },
@@ -142,8 +142,8 @@ var styles = StyleSheet.create({
         alignItems: 'center'
     },
     loginButton: {
-        borderColor: '#4c80f1',
-        backgroundColor: '#4c80f1',
+        borderColor: 'white',
+        backgroundColor: 'white',
         borderRadius:30
     }
 })
