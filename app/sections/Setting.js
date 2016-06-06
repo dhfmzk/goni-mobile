@@ -57,7 +57,7 @@ export default class SettingSection extends Component {
                     slackData: responseJSON
                 })
             } else {
-                console.warn('error');
+                // console.warn('error');
             }
         };
         request.open('GET', GONI_ROOT_URI+this.props.projectID+SUFFIX_SLACK);
