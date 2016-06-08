@@ -25,17 +25,27 @@ import gStyles from '../styles/global'
 const GONIPLUS_ROOT_URI = 'https://dashboard.goniapm.io/api/goniplus/'
 const SUFFIX_CPU = '/overview/dashboard/cpu'
 
+var testData1 = [
+    {name: 'test1', primaryColor: '#2c5ae9', secondaryColor: 'white', values: [10, 4, 6, 7, 8,12,18,23,11,12, 9]}
+]
+
+
 export default class DashboardSection extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
+        this._clickStatusBox = this._clickStatusBox.bind(this);
         this.state = {
             CPUData: [],
+            AUData: [],
+            firstAnimEnd: false,
             isCPULoaded: false,
             isTransectionLoaded: false,
-            isActiveUserLoaded: false
+            isActiveUserLoaded: false,
+            status: 0
         };
     }
+
     componentDidMount() {
         this._getDashboardCPU()
     }
@@ -65,6 +75,7 @@ export default class DashboardSection extends Component {
 
     _processCPUData(_data) {
         var timeList = []
+        var realTime = []
         var aData = []
         var date = new Date();
         for (const i of Array(7).fill(0).map((_, i) => 6-i)) {
@@ -78,6 +89,7 @@ export default class DashboardSection extends Component {
             var temp = {}
             temp['time'] = time
             temp['hit'] = [0,0,0,0,0,0,0,0,0,0,0,0]
+            temp['base'] = ''
             aData.push(temp)
         })
         aData.map((item) => {
@@ -86,10 +98,35 @@ export default class DashboardSection extends Component {
                 if(item['time'] == d.getHours()+':00') {
                     var index = Number.parseInt(d.getMinutes())/5
                     item['hit'][index] = Math.ceil(_data[key]/20)
+                    item['base'] = Number.parseInt(key)
                 }
             }
         })
+        console.log(aData);
         return aData;
+    }
+
+    async _clickStatusBox(_time) {
+        var token = await AsyncStorage.getItem('token');
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = (e) => {
+            if (request.readyState !== 4) {
+                return;
+            }
+            if (request.status === 200) {
+                var responseJSON = JSON.parse(request.responseText);
+
+                this.setState({
+                    AUData: responseJSON,
+                    isActiveUserLoaded: true
+                })
+            } else {
+                console.warn('error');
+            }
+        };
+        request.open('GET', GONIPLUS_ROOT_URI+this.props.projectKey+SUFFIX_CPU+'/'+(_time.toString()));
+        request.setRequestHeader('Authorization', 'Bearer ' + token);
+        request.send();
     }
 
     render() {
@@ -103,7 +140,7 @@ export default class DashboardSection extends Component {
     }
 
     _renderCPU() {
-        if(this.state.isCPULoaded) {
+        if(this.state.isCPULoaded && this.state.firstAnimEnd) {
             return (
                 <Animatable.View animation="fadeInDown" easing="ease-out" style={[gStyles.card, {paddingBottom: 20}]}>
                     <View style={{margin:10, flexDirection: 'row', alignItems: 'center'}}>
@@ -111,14 +148,18 @@ export default class DashboardSection extends Component {
                         <Text style={{marginLeft: 8, borderRadius: 2, borderColor: '#2c5ae9', borderWidth: 0.8, padding: 2, fontSize: 8, width: 35, textAlign: 'center', color: '#2c5ae9'}}>CPU</Text>
                     </View>
                     <View style={gStyles.decoBar}></View>
-                    <HeatmapChart
-                        colorStream={['#E1E4E6', '#87b1f3', '#6b9df3', '#5188f2', '#3b72ef', '#2c5ae9']}
-                        dataSet={this.state.CPUData}/>
+                    <Animatable.View animation="bounceIn" easing="ease-out">
+                        <HeatmapChart
+                            colorStream={['#E1E4E6', '#87b1f3', '#6b9df3', '#5188f2', '#3b72ef', '#2c5ae9']}
+                            dataSet={this.state.CPUData}
+                            onClickStatus={this._clickStatusBox}
+                            />
+                    </Animatable.View>
                 </Animatable.View>
             );
         }else {
             return(
-                <Animatable.View animation="fadeInDown" easing="ease-out" style={gStyles.card}>
+                <Animatable.View animation="fadeInDown" easing="ease-out" onAnimationEnd={() => this.setState({firstAnimEnd: true})} style={gStyles.card}>
                     <View style={{margin:10, flexDirection: 'row', alignItems: 'center'}}>
                         <Text style={{fontSize: 22, color: '#4d5256'}}>System Status</Text>
                         <Text style={{marginLeft: 8, borderRadius: 2, borderColor: '#2c5ae9', borderWidth: 0.8, padding: 2, fontSize: 8, width: 35, textAlign: 'center', color: '#2c5ae9'}}>CPU</Text>
@@ -137,7 +178,7 @@ export default class DashboardSection extends Component {
     }
 
     _renderActiveUser() {
-        if(this.state.isActiveUserLoaded) {
+        if(this.state.isActiveUserLoaded && this.state.firstAnimEnd) {
             return (
                 <Animatable.View animation="fadeInDown" easing="ease-out" style={gStyles.card}>
                     <View style={{margin:10}}>
@@ -186,7 +227,7 @@ export default class DashboardSection extends Component {
     }
 
     _renderTransection() {
-        if(this.state.isTransectionLoaded) {
+        if(this.state.isTransectionLoaded && this.state.firstAnimEnd) {
             return (
                 <Animatable.View animation="fadeInDown" easing="ease-out" style={gStyles.card}>
                     <View style={{margin:10}}>

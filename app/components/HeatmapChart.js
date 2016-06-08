@@ -54,20 +54,20 @@ export default class HeatmapChart extends Component {
             <View style={{flexDirection: 'column', alignItems: 'center'}}>
                 <View style={{flexDirection: 'row', margin: 4}}>
                     <View>
-                        <TouchableOpacity style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][0]], margin: 1}}></TouchableOpacity>
-                        <TouchableOpacity style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][1]], margin: 1}}></TouchableOpacity>
-                        <TouchableOpacity style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][2]], margin: 1}}></TouchableOpacity>
-                        <TouchableOpacity style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][3]], margin: 1}}></TouchableOpacity>
-                        <TouchableOpacity style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][4]], margin: 1}}></TouchableOpacity>
-                        <TouchableOpacity style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][5]], margin: 1}}></TouchableOpacity>
+                        <TouchableOpacity onPressOut={() => this.props.onClickStatus(_data['base']+0)} style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][0]], margin: 1}}></TouchableOpacity>
+                        <TouchableOpacity onPressOut={() => this.props.onClickStatus(_data['base']+300)} style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][1]], margin: 1}}></TouchableOpacity>
+                        <TouchableOpacity onPressOut={() => this.props.onClickStatus(_data['base']+600)} style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][2]], margin: 1}}></TouchableOpacity>
+                        <TouchableOpacity onPressOut={() => this.props.onClickStatus(_data['base']+900)} style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][3]], margin: 1}}></TouchableOpacity>
+                        <TouchableOpacity onPressOut={() => this.props.onClickStatus(_data['base']+1200)} style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][4]], margin: 1}}></TouchableOpacity>
+                        <TouchableOpacity onPressOut={() => this.props.onClickStatus(_data['base']+1500)} style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][5]], margin: 1}}></TouchableOpacity>
                     </View>
                     <View>
-                        <TouchableOpacity style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][6]], margin: 1}}></TouchableOpacity>
-                        <TouchableOpacity style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][7]], margin: 1}}></TouchableOpacity>
-                        <TouchableOpacity style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][8]], margin: 1}}></TouchableOpacity>
-                        <TouchableOpacity style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][9]], margin: 1}}></TouchableOpacity>
-                        <TouchableOpacity style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][10]], margin: 1}}></TouchableOpacity>
-                        <TouchableOpacity style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][11]], margin: 1}}></TouchableOpacity>
+                        <TouchableOpacity onPressOut={() => this.props.onClickStatus(_data['base']+1800)} style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][6]], margin: 1}}></TouchableOpacity>
+                        <TouchableOpacity onPressOut={() => this.props.onClickStatus(_data['base']+2100)} style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][7]], margin: 1}}></TouchableOpacity>
+                        <TouchableOpacity onPressOut={() => this.props.onClickStatus(_data['base']+2400)} style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][8]], margin: 1}}></TouchableOpacity>
+                        <TouchableOpacity onPressOut={() => this.props.onClickStatus(_data['base']+2700)} style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][9]], margin: 1}}></TouchableOpacity>
+                        <TouchableOpacity onPressOut={() => this.props.onClickStatus(_data['base']+3000)} style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][10]], margin: 1}}></TouchableOpacity>
+                        <TouchableOpacity onPressOut={() => this.props.onClickStatus(_data['base']+3300)} style={{borderRadius: 2, height: 15, width:15, backgroundColor: this.props.colorStream[_data['hit'][11]], margin: 1}}></TouchableOpacity>
                     </View>
                 </View>
                 <Text style={{color: '#4d5256', fontSize: 13}}>
@@ -79,6 +79,7 @@ export default class HeatmapChart extends Component {
 }
 
 HeatmapChart.propTypes = {
+    onClickStatus: React.PropTypes.func,
     dataSet: React.PropTypes.array,
     colorStream: React.PropTypes.array
 }
