@@ -61,6 +61,17 @@ export default class GoniMobileLogin extends Component {
         return (
             <View style={styles.loginContainer}>
                 <View style={styles.logoSection}>
+                    <View style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
+                        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                            <Image
+                                style={{width: 150, height: 150, borderRadius: 10}}
+                                source={require('../assets/img/goimg1910.png')}>
+                                <Image
+                                    style={{width: 150, height: 150, borderRadius: 10, tintColor: 'rgba(44, 90, 233, 0.5)'}}
+                                    source={require('../assets/img/goimg1910.png')}/>
+                            </Image>
+                        </View>
+                    </View>
                 </View>
                 <View style={styles.inputSection}>
                     <View style={styles.inputSectionLayout}>
@@ -69,8 +80,8 @@ export default class GoniMobileLogin extends Component {
                             <View style={styles.inputDeco}>
                                 <TextInput
                                     placeholder={'E-mail'}
-                                    placeholderTextColor={'#4d5256'}
-                                    style={{color: '#4c80f1', height: 40}}
+                                    placeholderTextColor={'white'}
+                                    style={{color: 'white', height: 40}}
                                     underlineColorAndroid='white'
                                     onChangeText={(text) => {this.setState({email: text})}}
                                 />
@@ -78,8 +89,8 @@ export default class GoniMobileLogin extends Component {
                             <View style={styles.inputDeco}>
                                 <TextInput
                                     placeholder={'Password'}
-                                    placeholderTextColor={'#4d5256'}
-                                    style={{color: '#4c80f1', height: 40}}
+                                    placeholderTextColor={'white'}
+                                    style={{color: 'white', height: 40}}
                                     secureTextEntry={true}
                                     onChangeText={(text) => {this.setState({password: text})}}
                                 />
@@ -113,11 +124,11 @@ var styles = StyleSheet.create({
         alignItems: 'stretch'
     },
     logoSection: {
-        flex: 0.4,
+        flex: 0.5,
         backgroundColor: '#4c80f1'
     },
     inputSection: {
-        flex: 0.6,
+        flex: 0.5,
         backgroundColor: '#4c80f1',
         padding: 40,
         paddingBottom: 10
