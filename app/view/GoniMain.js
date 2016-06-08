@@ -34,10 +34,22 @@ export default class GoniMain extends Component {
                     tabBarPosition="top"
                     locked={true}
                     renderTabBar={() => <DashboardBar />}>
-                    <DashboardSection projectID={this.props.projectID} tabLabel="dashboard" />
-                    <APISection projectID={this.props.projectID} tabLabel="api" />
-                    <MetricsSection projectID={this.props.projectID} tabLabel="metrics" />
-                    <SettingSection projectID={this.props.projectID} tabLabel="setting" />
+                    <DashboardSection
+                        tabLabel="dashboard"
+                        projectID={this.props.projectID}
+                        projectKey={this.props.projectKey}/>
+                    <APISection
+                        tabLabel="api"
+                        projectID={this.props.projectID}
+                        projectKey={this.props.projectKey}/>
+                    <MetricsSection
+                        tabLabel="metrics"
+                        projectID={this.props.projectID}
+                        projectKey={this.props.projectKey}/>
+                    <SettingSection
+                        tabLabel="setting"
+                        projectID={this.props.projectID}
+                        projectKey={this.props.projectKey}/>
                 </ScrollableTabView>
             </View>
         );
