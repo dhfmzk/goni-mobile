@@ -17,6 +17,13 @@ var gStyles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 3
     },
+    decoBar: {
+        height:0.5,
+        backgroundColor: 'gray',
+        margin: 15,
+        marginLeft: 20,
+        marginRight: 20
+    }
 });
 
 module.exports = gStyles;
