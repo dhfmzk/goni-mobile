@@ -49,6 +49,5 @@ export default class FullBarChart extends Component {
 }
 
 FullBarChart.propTypes = {
-    barLabel: React.PropTypes.string,
-    dataSet: React.PropTypes.array
+    dataSet: React.PropTypes.object
 }
