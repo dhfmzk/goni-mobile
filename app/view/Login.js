@@ -11,6 +11,7 @@ import {
     AsyncStorage,
     Image
 } from 'react-native';
+import * as Animatable from 'react-native-animatable'
 import { Actions } from 'react-native-router-flux';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Button from 'apsl-react-native-button';
@@ -61,17 +62,18 @@ export default class GoniMobileLogin extends Component {
         return (
             <View style={styles.loginContainer}>
                 <View style={styles.logoSection}>
-                    <View style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
+                    <Animatable.View
+                        animation="pulse" easing="ease-out"
+                        style={{flex: 1, flexDirection: 'column', alignItems: 'center', marginTop: 20}}>
                         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-                            <Image
-                                style={{width: 150, height: 150, borderRadius: 10}}
-                                source={require('../assets/img/goimg1910.png')}>
-                                <Image
-                                    style={{width: 150, height: 150, borderRadius: 10, tintColor: 'rgba(44, 90, 233, 0.5)'}}
-                                    source={require('../assets/img/goimg1910.png')}/>
-                            </Image>
+                            <Text style={{color: 'white', fontSize: 82, margin:5}}>&lt;</Text>
+                            <View style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
+                                <Text style={{color: 'white', fontSize: 62}}>Goni</Text>
+                                <Text style={{color: 'white', fontSize: 28, marginTop: -15, backgroundColor: 'rgba(0,0,0,0)'}}>      Mobile</Text>
+                            </View>
+                            <Text style={{color: 'white', fontSize: 82, margin:5}}>/&gt;</Text>
                         </View>
-                    </View>
+                    </Animatable.View>
                 </View>
                 <View style={styles.inputSection}>
                     <View style={styles.inputSectionLayout}>
@@ -124,11 +126,11 @@ var styles = StyleSheet.create({
         alignItems: 'stretch'
     },
     logoSection: {
-        flex: 0.5,
+        flex: 0.4,
         backgroundColor: '#4c80f1'
     },
     inputSection: {
-        flex: 0.5,
+        flex: 0.6,
         backgroundColor: '#4c80f1',
         padding: 40,
         paddingBottom: 10
