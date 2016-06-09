@@ -75,6 +75,7 @@ export default class GoniProjects extends Component {
                 animation="fadeInDown"
                 easing="ease-in-out"
                 duration={500}
+                delay={rowData['id']*100}
                 style={styles.apiCard}>
                 <View style={styles.cardLayout}>
                     <View style={styles.projectNum}>
