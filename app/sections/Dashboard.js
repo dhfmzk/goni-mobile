@@ -17,6 +17,7 @@ import {
     generateScale
 } from 'react-native-vs-charts'
 import * as Animatable from 'react-native-animatable'
+import Spinner from 'react-native-spinkit'
 import HeatmapChart from '../components/HeatmapChart'
 import FullBarChart from '../components/FullBarChart'
 
@@ -166,7 +167,8 @@ export default class DashboardSection extends Component {
                     </View>
                     <View style={gStyles.decoBar}></View>
                     <View style={{flexDirection: 'column', alignItems: 'center', height: 250}}>
-                        <View style={{flex:1, flexDirection: 'row', alignItems: 'center'}}>
+                        <View style={{flex:1, flexDirection: 'column', alignItems: 'center'}}>
+                            <Spinner style={{margin: 30}} isVisible={true} size={50} type={'Wave'} color={'#4c80f1'}/>
                             <Text style={{fontSize: 20}}>
                                 잠시만 기다려주세요
                             </Text>

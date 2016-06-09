@@ -16,6 +16,7 @@
     "react-native-keyboard-spacer": "^0.2.0",
     "react-native-router-flux": "^3.26.16",
     "react-native-scrollable-tab-view": "^0.4.3",
+    "react-native-spinkit": "^0.1.2",
     "react-native-vs-charts": "^0.1.0"
   }
 }
