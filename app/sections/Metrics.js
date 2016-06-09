@@ -6,14 +6,18 @@ import {
     View,
     Text,
     TouchableHighlight,
-    ScrollView
+    ScrollView,
+    Picker
 } from 'react-native';
+
+import gStyles from '../styles/global'
 
 export default class MetricsSection extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            pathList: []
         };
     }
 
@@ -32,8 +36,16 @@ export default class MetricsSection extends Component {
     render() {
         return (
             <ScrollView style={{flex: 1, flexDirection: 'column', backgroundColor: '#f8fafb'}}>
-                <View style={styles.settingCard}>
-                    <Text>TestAPI Metrics</Text>
+                <View style={gStyles.card}>
+                    <View style={{margin:10}}>
+                        <Text style={{fontSize: 22, color: '#4d5256'}}>Select your path</Text>
+                    </View>
+                    <View style={gStyles.decoBar}></View>
+                    <Picker
+                        onValueChange={(lang) => this.setState({language: lang})}>
+                        <Picker.Item label="Select Instance" value="none" />
+                        <Picker.Item label="JavaScript" value="js" />
+                    </Picker>
                 </View>
             </ScrollView>
         );
