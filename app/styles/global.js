@@ -24,6 +24,20 @@ var gStyles = StyleSheet.create({
         margin: 15,
         marginLeft: 20,
         marginRight: 20
+    },
+    button: {
+        flex: 0.5,
+        height: 30,
+        borderColor: '#5f6466',
+        borderRadius: 4,
+        padding: 10,
+        margin:10
+    },
+    red: {
+        borderColor: '#ff7595'
+    },
+    blue: {
+        borderColor: '#4c80f1'
     }
 });
 
