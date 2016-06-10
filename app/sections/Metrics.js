@@ -7,22 +7,45 @@ import {
     Text,
     TouchableHighlight,
     ScrollView,
-    Picker
+    Picker,
+    AsyncStorage
 } from 'react-native';
 
 import gStyles from '../styles/global'
+
+const GONIPLUS_ROOT_URI = 'https://dashboard.goniapm.io/api/goniplus/'
+const SUFFIX_EXPVAR = 'expvar/instances'
+const SUFFIX_RUNTIME = 'runtime/instances'
 
 export default class MetricsSection extends Component {
 
     constructor(props) {
         super(props);
+        this._getMetricsInstance = this._getMetricsInstance.bind(this);
+        this._getMetricsInstance(SUFFIX_EXPVAR)
+        this._getMetricsInstance(SUFFIX_RUNTIME)
         this.state = {
             pathList: []
         };
     }
 
     async _getMetricsInstance(_metrics) {
-
+        var token = await AsyncStorage.getItem('token');
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = (e) => {
+            if (request.readyState !== 4) {
+                return;
+            }
+            if (request.status === 200) {
+                var responseJSON = JSON.parse(request.responseText);
+                console.log(responseJSON);
+            } else {
+                console.warn('error');
+            }
+        };
+        request.open('GET', GONIPLUS_ROOT_URI+this.props.projectKey+'/'+_metrics);
+        request.setRequestHeader('Authorization', 'Bearer ' + token);
+        request.send();
     }
 
     async _getRuntimeData(_instance) {
@@ -38,7 +61,7 @@ export default class MetricsSection extends Component {
             <ScrollView style={{flex: 1, flexDirection: 'column', backgroundColor: '#f8fafb'}}>
                 <View style={gStyles.card}>
                     <View style={{margin:10}}>
-                        <Text style={{fontSize: 22, color: '#4d5256'}}>Select your path</Text>
+                        <Text style={{fontSize: 22, color: '#4d5256'}}>Select your Instance</Text>
                     </View>
                     <View style={gStyles.decoBar}></View>
                     <Picker
