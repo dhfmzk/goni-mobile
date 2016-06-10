@@ -9,7 +9,6 @@ import {
     Image
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import ActionButton from 'react-native-action-button';
 
 import DashboardBar from '../components/DashboardBar';
 
