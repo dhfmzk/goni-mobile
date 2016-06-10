@@ -55,9 +55,9 @@ export default class DashboardSection extends Component {
             }
             if (request.status === 200) {
                 var responseJSON = JSON.parse(request.responseText);
-
+                var temp = this._processCPUData(responseJSON)
                 this.setState({
-                    CPUData: this._processCPUData(responseJSON),
+                    CPUData: temp,
                     isCPULoaded: true
                 })
             } else {
@@ -70,6 +70,7 @@ export default class DashboardSection extends Component {
     }
 
     _processCPUData(_data) {
+        console.log(_data)
         var baseList = []
         var result = []
         var date = new Date();
@@ -79,7 +80,6 @@ export default class DashboardSection extends Component {
         for (const i of Array(7).fill(0).map((_, i) => 6-i)) {
             baseList.push(date.valueOf()/1000-3600*i)
         }
-
         baseList.map((base) => {
             var temp = {}
             var dTemp = new Date(base*1000)
@@ -89,12 +89,17 @@ export default class DashboardSection extends Component {
             result.push(temp)
         })
         result.map((item) => {
+            console.log(item);
             for (const key of Object.keys(_data)) {
+                if(_data[key]==0) { _data[key] = 1 }
                 var d = new Date(Number.parseInt(key)*1000);
-                if(item['base'] == key) {
-                    var index = Number.parseInt(d.getMinutes())/5
+                var t = new Date(Number.parseInt(key)*1000);
+                d.setMinutes(0);
+                d.setSeconds(0);
+                d.setMilliseconds(0);
+                if(item['base'] == (d.valueOf()/1000)) {
+                    var index = Number.parseInt(t.getMinutes())/5
                     item['hit'][index] = Math.ceil(_data[key]/20)
-                    item['base'] = Number.parseInt(key)
                 }
             }
         })
@@ -163,48 +168,50 @@ export default class DashboardSection extends Component {
             }
         }
         // process Transection
-        if(_data.length > 0) {
-            checkT = true
-            tempObj = [
-                { name: '200', primaryColor: '#4c80f1', secondaryColor: 'white', values: []},
-                { name: '401', primaryColor: '#ffda00', secondaryColor: 'white', values: []},
-                { name: '500', primaryColor: '#ff7595', secondaryColor: 'white', values: []}
-            ]
-            max = []
-            _data['transaction'].sort((a, b) => {
-                if (a.mean > b.mean) { return -1; }
-                if (a.mean < b.mean) { return  1; }
-                else { return 0; }
-            })
-            _data['transaction'] = _data['transaction'].slice(0,5)
-            _data['transaction'].forEach((item) => {
-                max.push(item['count'])
-                l.push(item['path'])
-                tempObj[0]['values'].push(0)
-                tempObj[1]['values'].push(0)
-                tempObj[2]['values'].push(0)
-                _data['transactionStatus'].forEach((check) => {
-                    if(check['path'] == item['path']) {
-                        if(check['status'] == '200') {
-                            tempObj[0]['values'].pop()
-                            tempObj[0]['values'].push(check['count'])
-                        }
-                        if(check['status'] == '401') {
-                            tempObj[1]['values'].pop()
-                            tempObj[1]['values'].push(check['count'])
-                        }
-
-                        if(check['status'] == '500') {
-                            tempObj[2]['values'].pop()
-                            tempObj[2]['values'].push(check['count'])
-                        }
-                    }
+        if(true) {
+            if(true) {
+                checkT = true
+                tempObj = [
+                    { name: '200', primaryColor: '#4c80f1', secondaryColor: 'white', values: []},
+                    { name: '401', primaryColor: '#ffda00', secondaryColor: 'white', values: []},
+                    { name: '500', primaryColor: '#ff7595', secondaryColor: 'white', values: []}
+                ]
+                max = []
+                _data['transaction'].sort((a, b) => {
+                    if (a.mean > b.mean) { return -1; }
+                    if (a.mean < b.mean) { return  1; }
+                    else { return 0; }
                 })
-            })
-            result['transaction'] = {}
-            result['transaction']['data'] = tempObj
-            result['transaction']['categoryLabels'] = l
-            result['transaction']['scale'] = { min: 0, max: Math.max(...max)>0? Math.max(...max) : 10, unit: Math.ceil(Math.max(...max)/10)>0? Math.ceil(Math.max(...max)/10) : 1 }
+                _data['transaction'] = _data['transaction'].slice(0,5)
+                _data['transaction'].forEach((item) => {
+                    max.push(item['count'])
+                    l.push(item['path'])
+                    tempObj[0]['values'].push(0)
+                    tempObj[1]['values'].push(0)
+                    tempObj[2]['values'].push(0)
+                    _data['transactionStatus'].forEach((check) => {
+                        if(check['path'] == item['path']) {
+                            if(check['status'] == '200') {
+                                tempObj[0]['values'].pop()
+                                tempObj[0]['values'].push(check['count'])
+                            }
+                            if(check['status'] == '401') {
+                                tempObj[1]['values'].pop()
+                                tempObj[1]['values'].push(check['count'])
+                            }
+
+                            if(check['status'] == '500') {
+                                tempObj[2]['values'].pop()
+                                tempObj[2]['values'].push(check['count'])
+                            }
+                        }
+                    })
+                })
+                result['transaction'] = {}
+                result['transaction']['data'] = tempObj
+                result['transaction']['categoryLabels'] = l
+                result['transaction']['scale'] = { min: 0, max: Math.max(...max)>1? Math.max(...max) : 10, unit: Math.ceil(Math.max(...max)/10)>0? Math.ceil(Math.max(...max)/10) : 1 }
+            }
         }
         console.log(result);
         this.setState({
@@ -322,10 +329,6 @@ export default class DashboardSection extends Component {
                         <Text style={{fontSize: 22, color: '#4d5256'}}>Top 5 Transection</Text>
                     </View>
                     <View style={gStyles.decoBar}></View>
-                    <View>
-                        <View>
-                        </View>
-                    </View>
                     <Animatable.View animation="bounceIn" easing="ease-out" style={{flex: 1, height: 50}}>
                         <View style={{flexDirection: 'column', alignItems: 'center', height: 30}}>
                             <View style={{flex:1, flexDirection: 'row', alignItems: 'center'}}>
