@@ -77,7 +77,6 @@ export default class APISection extends Component {
             }
             if (request.status === 200) {
                 var responseJSON = JSON.parse(request.responseText);
-                console.log(responseJSON);
                 this.setState({
                     responseData: this._processResponse(responseJSON)
                 })
@@ -210,6 +209,24 @@ export default class APISection extends Component {
                         <Text style={{fontSize: 22, color: '#4d5256'}}>Response Time</Text>
                     </View>
                     <View style={gStyles.decoBar}></View>
+                    <Animatable.View animation="bounceIn" easing="ease-out" style={{flex: 1, height: 50}}>
+                        <View style={{flexDirection: 'column', alignItems: 'center', height: 30}}>
+                            <View style={{flex:1, flexDirection: 'row', alignItems: 'center'}}>
+                                <View style={{marginLeft: 5, marginRight: 5, flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text style={{color: '#a9afb3', fontSize: 10}}>200</Text>
+                                    <View style={{marginLeft: 5, marginRight: 10, width:10, height: 10, backgroundColor: '#4c80f1', borderRadius: 10}}></View>
+                                </View>
+                                <View style={{marginLeft: 10, marginRight: 5, flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text style={{color: '#a9afb3', fontSize: 10}}>401</Text>
+                                    <View style={{marginLeft: 5, marginRight: 5, width:10, height: 10, backgroundColor: '#ffda00', borderRadius: 10}}></View>
+                                </View>
+                                <View style={{marginLeft: 10, marginRight: 5, flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text style={{color: '#a9afb3', fontSize: 10}}>500</Text>
+                                    <View style={{marginLeft: 5, marginRight: 5, width:10, height: 10, backgroundColor: '#ff7595', borderRadius: 10}}></View>
+                                </View>
+                            </View>
+                        </View>
+                    </Animatable.View>
                     <View style={{marginLeft: 10, marginRight:20, height: 170, flex: 1, flexDirection: 'row'}}>
                         <Axes
                             refresh={this.state.responseData}
