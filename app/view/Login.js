@@ -24,8 +24,8 @@ export default class GoniMobileLogin extends Component {
         super(props);
         this.state = {
             loggedin: false,
-            email: 'test@layer123.io',
-            password: 'test',
+            email: '',
+            password: '',
             testValue: ''
         };
     }
