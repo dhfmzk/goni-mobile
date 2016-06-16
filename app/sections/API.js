@@ -21,8 +21,8 @@ import gStyles from '../styles/global'
 
 const GONIPLUS_ROOT_URI = 'https://dashboard.goniapm.io/api/goniplus/'
 const SUFFIX_PATH = '/response/paths'
-const SUFFIX_RESPONSE = '/response/6h'
-const SUFFIX_STATICS = '/response/statistics/3h'
+const SUFFIX_RESPONSE = '/response/30m'
+const SUFFIX_STATICS = '/response/statistics/6h'
 
 export default class APISection extends Component {
 
